@@ -29,6 +29,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>✦</text></svg>" />
 </head>
 <body>
+<a class="skip-link" href="#wall">Skip to the people</a>
 <div class="grain" aria-hidden="true"></div>
 <div class="aurora" aria-hidden="true"></div>
 
@@ -50,14 +51,14 @@
       <span class="reveal" style="--d:2">you.</span>
     </h1>
     <p class="lead reveal" style="--d:3">
-      To the <b class="count" data-to="0" id="c-supporters">0</b> people who starred, forked,
+      To the <b class="count" id="c-supporters">…</b> people who starred, forked,
       watched and followed along — for the
-      <b class="count" data-to="0" id="c-interactions">0</b> small gestures of support across
-      <b class="count" data-to="0" id="c-projects">0</b> projects. Every face in the cloud below is
+      <b class="count" id="c-interactions">…</b> small gestures of support across
+      <b class="count" id="c-projects">…</b> projects. Every face in the cloud below is
       one of you.
     </p>
     <div class="hero-cue reveal" style="--d:4">
-      <span class="superfan-note"><i class="ring"></i> <b id="c-superfans">0</b> of you cheered more than once</span>
+      <span class="superfan-note"><i class="ring"></i> <b id="c-superfans">…</b> of you cheered more than once</span>
     </div>
   </section>
 
@@ -73,11 +74,11 @@
     <div class="stage">
       <div class="controls" id="controls">
         <div class="filter-group" role="group" aria-label="Filter by gesture">
-          <button class="filter is-active" data-kind="all">Everything</button>
-          <button class="filter" data-kind="star"><i class="dot dot-star"></i> Stars</button>
-          <button class="filter" data-kind="fork"><i class="dot dot-fork"></i> Forks</button>
-          <button class="filter" data-kind="watch"><i class="dot dot-watch"></i> Watches</button>
-          <button class="filter" data-kind="follow"><i class="dot dot-follow"></i> Follows</button>
+          <button class="filter is-active" data-kind="all" aria-pressed="true">Everything</button>
+          <button class="filter" data-kind="star" aria-pressed="false"><i class="dot dot-star"></i> Stars</button>
+          <button class="filter" data-kind="fork" aria-pressed="false"><i class="dot dot-fork"></i> Forks</button>
+          <button class="filter" data-kind="watch" aria-pressed="false"><i class="dot dot-watch"></i> Watches</button>
+          <button class="filter" data-kind="follow" aria-pressed="false"><i class="dot dot-follow"></i> Follows</button>
         </div>
         <label class="toggle">
           <input type="checkbox" id="superfans-only" />
@@ -86,8 +87,10 @@
         <button class="reset" id="reset-view" title="Reset view">Recenter</button>
       </div>
 
-      <canvas id="graph" aria-label="Force-directed graph of supporters and projects"></canvas>
+      <canvas id="graph" role="img"
+        aria-label="An interactive cloud of every supporter, drawn from the data. Names and links are listed in the searchable wall below."></canvas>
 
+      <div class="stage-loading" id="stage-loading"><span class="spark">✦</span> gathering gratitude…</div>
       <div class="tooltip" id="tooltip" hidden></div>
 
       <div class="legend">
@@ -122,10 +125,10 @@
         <span class="hint">Sorted to surface the smaller projects first, not the giants.</span></p>
     </div>
 
-    <div class="dep-tabs" id="dep-tabs" role="tablist">
-      <button class="dep-tab is-active" data-mode="worth">Worth a star</button>
-      <button class="dep-tab" data-mode="used">Most relied upon</button>
-      <button class="dep-tab" data-mode="second" hidden>Two hops away</button>
+    <div class="dep-tabs" id="dep-tabs" role="group" aria-label="Which dependencies to show">
+      <button class="dep-tab is-active" data-mode="worth" aria-pressed="true">Worth a star</button>
+      <button class="dep-tab" data-mode="used" aria-pressed="false">Most relied upon</button>
+      <button class="dep-tab" data-mode="second" aria-pressed="false" hidden>Two hops away</button>
       <span class="dep-meta" id="dep-meta"></span>
     </div>
     <p class="dep-note" id="dep-note"></p>

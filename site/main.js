@@ -12,6 +12,10 @@ const KIND_LABEL = { star: "starred", fork: "forked", watch: "watched", follow: 
 const SUPER = 2; // score >= this == super-fan (kept in sync with config.aggregate.superFanThreshold)
 
 const $ = (s, r = document) => r.querySelector(s);
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Swap a broken avatar for a neutral placeholder instead of the browser's broken-image icon.
+const AVATAR_FALLBACK = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Crect width='8' height='8' fill='%23241a10'/%3E%3C/svg%3E";
+const onImgError = `onerror="this.onerror=null;this.src='${AVATAR_FALLBACK}'"`;
 const avatar = (url, size = 120) => (url ? safeUrl(url + (url.includes("?") ? "&" : "?") + "s=" + size) : "");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 // Only allow http(s) URLs through to href/src — neutralises javascript:/data: from external data.
@@ -21,11 +25,11 @@ const safeUrl = (u) => { try { const url = new URL(u, location.href); return /^h
 // tooltip and the wall hover card so they read identically.
 const kindTagsHTML = (kinds) =>
   Object.entries(kinds || {})
-    .map(([k, v]) => `<span class="tt-tag k-${k}">${k === "follow" ? "follows me" : v + " " + k + (v > 1 ? "s" : "")}</span>`)
+    .map(([k, v]) => `<span class="tt-tag k-${esc(k)}">${k === "follow" ? "follows me" : v + " " + esc(k) + (v > 1 ? "s" : "")}</span>`)
     .join("");
 
 const personPopHTML = (p) =>
-  `<span class="tt-head"><img src="${esc(avatar(p.avatar, 80))}" alt="" />` +
+  `<span class="tt-head"><img src="${esc(avatar(p.avatar, 80))}" alt="" ${onImgError}/>` +
   `<span class="tt-id"><span class="tt-name">${esc(p.name || p.title || p.login)}</span>` +
   `<span class="tt-sub">@${esc(p.login)}</span></span></span>` +
   `<span class="tt-tags">${kindTagsHTML(p.kinds)}</span>`;
@@ -49,10 +53,8 @@ async function boot() {
       return r.json();
     });
   } catch (e) {
-    document.body.insertAdjacentHTML(
-      "beforeend",
-      `<p style="text-align:center;color:#8c7a5d;padding:60px;font-family:var(--mono)">Couldn't load the data. Run <code>npm run sync</code> first.</p>`,
-    );
+    const el = $("#stage-loading");
+    if (el) el.textContent = "Couldn't load the gratitude right now — please try again shortly.";
     return;
   }
 
@@ -64,6 +66,7 @@ async function boot() {
   buildReciprocal(g);
   buildPresence(g);
   setupReveals();
+  document.body.classList.add("loaded"); // fades the loading indicator
 }
 
 /* ── Top bar, footer, hero numbers ─────────────────────────────────────── */
@@ -105,6 +108,7 @@ function countUp(g) {
 
 function animateNumber(el, to) {
   if (!el) return;
+  if (reduceMotion) { el.textContent = to.toLocaleString("en-US"); return; }
   const dur = 1400, t0 = performance.now();
   const tick = (now) => {
     const p = Math.min(1, (now - t0) / dur);
@@ -334,7 +338,7 @@ function buildGraph(g) {
         <span class="tt-sub">${n.supporters} supporter${n.supporters === 1 ? "" : "s"} · ${fmtStars(n.reactions)}★</span></span></span>
         ${langs ? `<span class="tt-langs">${langs}</span>` : ""}`;
     } else if (n.type === "me") {
-      html = `<span class="tt-head"><img src="${esc(avatar(n.avatar, 80))}" alt="" ><span class="tt-id">
+      html = `<span class="tt-head"><img src="${esc(avatar(n.avatar, 80))}" alt="" ${onImgError}><span class="tt-id">
         <span class="tt-name">${esc(n.title)}</span><span class="tt-sub">that's me — thank you for being here</span></span></span>`;
     } else {
       html = personPopHTML(n);
@@ -366,21 +370,27 @@ function buildGraph(g) {
   // ── Controls ─────────────────────────────────────────────────────────
   $("#controls").querySelectorAll(".filter").forEach((btn) =>
     btn.addEventListener("click", () => {
-      $("#controls").querySelectorAll(".filter").forEach((b) => b.classList.remove("is-active"));
+      $("#controls").querySelectorAll(".filter").forEach((b) => {
+        b.classList.remove("is-active");
+        b.setAttribute("aria-pressed", "false");
+      });
       btn.classList.add("is-active");
+      btn.setAttribute("aria-pressed", "true");
       filterKind = btn.dataset.kind;
       scheduleRender();
     }),
   );
   $("#superfans-only").addEventListener("change", (e) => { superOnly = e.target.checked; scheduleRender(); });
   $("#reset-view").addEventListener("click", () =>
-    d3.select(canvas).transition().duration(600).call(zoom.transform, d3.zoomIdentity),
+    d3.select(canvas).transition().duration(reduceMotion ? 0 : 600).call(zoom.transform, d3.zoomIdentity),
   );
 
   window.addEventListener("resize", resize);
   resize();
-  // give the layout a head start so it opens already settled-ish
-  for (let i = 0; i < 90; i++) sim.tick();
+  // Give the layout a head start so it opens already settled-ish. Under reduced-motion,
+  // settle it fully and freeze — no on-load drift (drag still re-heats on user action).
+  for (let i = 0; i < (reduceMotion ? 320 : 90); i++) sim.tick();
+  if (reduceMotion) sim.stop();
   scheduleRender();
 }
 
@@ -401,7 +411,7 @@ function buildWall(g) {
   const card = (p) => {
     const rank = rankOf(p.score);
     return `<a class="face ${p.score >= SUPER ? "super" : ""}${rank ? ` rank-${rank}` : ""}" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener" data-name="${esc((p.name || "") + " " + p.login).toLowerCase()}">
-       <img loading="lazy" src="${esc(avatar(p.avatar, 120))}" alt="${esc(p.name || p.login)}" />
+       <img loading="lazy" src="${esc(avatar(p.avatar, 120))}" alt="${esc(p.name || p.login)}" ${onImgError}/>
        ${rank ? `<span class="rank-crown">${rank === 1 ? "★" : rank}</span>` : ""}
        ${p.score >= SUPER ? `<span class="score-badge">${p.score}</span>` : ""}
        <span class="face-card">${personPopHTML(p)}</span>
@@ -488,7 +498,7 @@ function depCard(d) {
     ? `via ${d.usageCount} of my deps`
     : `in ${d.usageCount} of my repo${d.usageCount > 1 ? "s" : ""}`;
   return `<a class="dep-card ${d.gem ? "is-gem" : ""} ${d.active ? "" : "is-inactive"}" href="${esc(safeUrl(d.url))}" target="_blank" rel="noopener">
-    <img class="dep-avatar" src="${esc(avatar(d.owner.avatar, 80))}" alt="${esc(d.owner.login)}" loading="lazy" />
+    <img class="dep-avatar" src="${esc(avatar(d.owner.avatar, 80))}" alt="${esc(d.owner.login)}" loading="lazy" ${onImgError}/>
     <span class="dep-body">
       <span class="dep-name">${esc(d.repo)}</span>
       <span class="dep-desc">${d.description ? esc(d.description) : ""}</span>
@@ -545,11 +555,15 @@ function buildReciprocal(g) {
       : "";
   };
 
+  const syncTab = (active) => $("#dep-tabs").querySelectorAll(".dep-tab").forEach((b) => {
+    const on = b === active;
+    b.classList.toggle("is-active", on);
+    b.setAttribute("aria-pressed", String(on));
+  });
   $("#dep-tabs").querySelectorAll(".dep-tab").forEach((btn) => {
-    btn.classList.toggle("is-active", btn.dataset.mode === mode);
+    if (btn.dataset.mode === mode) syncTab(btn);
     btn.addEventListener("click", () => {
-      $("#dep-tabs").querySelectorAll(".dep-tab").forEach((b) => b.classList.remove("is-active"));
-      btn.classList.add("is-active");
+      syncTab(btn);
       mode = btn.dataset.mode;
       expanded = false;
       paint();
@@ -577,7 +591,7 @@ function buildReciprocal(g) {
   const mineMore = $("#mine-more");
   const mineChip = (m) =>
     `<a class="recip-person" href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener">
-      <img src="${esc(avatar(m.avatar, 80))}" alt="" loading="lazy"><b>${esc(m.name)}</b></a>`;
+      <img src="${esc(avatar(m.avatar, 80))}" alt="" loading="lazy" ${onImgError}><b>${esc(m.name)}</b></a>`;
   let mineOpen = false;
   const paintMine = () => {
     if (!mine.length) { mineGrid.innerHTML = `<p class="recip-empty">A quiet follower of work, not people.</p>`; return; }
