@@ -1,0 +1,38 @@
+# Redeploy the site whenever its source changes on main (design tweaks, etc.).
+# Data-only refreshes are deployed by sync.yml instead.
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply custom domain (config.json "cname")
+        run: |
+          CNAME="$(node -p "require('./config.json').cname || ''")"
+          if [ -n "$CNAME" ]; then echo "$CNAME" > site/CNAME; echo "custom domain → $CNAME"; fi
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

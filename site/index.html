@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thank you — an open letter of gratitude</title>
+<meta name="description" content="A thank-you to everyone who starred, forked, watched and followed my work — visualized as a constellation of the people behind the numbers." />
+
+<meta property="og:title" content="Thank you" />
+<meta property="og:description" content="To everyone who starred, forked and followed my work — this constellation is for you." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="assets/preview.png" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Hanken+Grotesk:wght@300..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>✦</text></svg>" />
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"></div>
+
+<!-- ── Top bar ─────────────────────────────────────────────────────────── -->
+<header class="topbar">
+  <a class="wordmark" href="#top"><span class="spark">✦</span> thank&nbsp;you</a>
+  <div class="topbar-meta">
+    <span class="chips" id="source-chips"></span>
+    <span class="updated" id="updated">—</span>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <p class="eyebrow reveal">An open <span class="eyebrow-src">(source)</span> letter of gratitude</p>
+    <h1 class="title">
+      <span class="reveal" style="--d:1">Thank</span>
+      <span class="reveal" style="--d:2">you.</span>
+    </h1>
+    <p class="lead reveal" style="--d:3">
+      To the <b class="count" data-to="0" id="c-supporters">0</b> people who starred, forked,
+      watched and followed along — for the
+      <b class="count" data-to="0" id="c-interactions">0</b> small gestures of support across
+      <b class="count" data-to="0" id="c-projects">0</b> projects. Every face in the cloud below is
+      one of you.
+    </p>
+    <div class="hero-cue reveal" style="--d:4">
+      <span class="superfan-note"><i class="ring"></i> <b id="c-superfans">0</b> of you cheered more than once</span>
+    </div>
+  </section>
+
+  <!-- ── The cloud ─────────────────────────────────────────────────────── -->
+  <section class="constellation" id="constellation">
+    <div class="section-head">
+      <h2>The cloud</h2>
+      <p>Each face is a person. Lines run from people to the work they touched.
+         The ones who showed up again and again drift toward the center.
+         <span class="hint">Drag the cloud · scroll to zoom · hover a face.</span></p>
+    </div>
+
+    <div class="stage">
+      <div class="controls" id="controls">
+        <div class="filter-group" role="group" aria-label="Filter by gesture">
+          <button class="filter is-active" data-kind="all">Everything</button>
+          <button class="filter" data-kind="star"><i class="dot dot-star"></i> Stars</button>
+          <button class="filter" data-kind="fork"><i class="dot dot-fork"></i> Forks</button>
+          <button class="filter" data-kind="watch"><i class="dot dot-watch"></i> Watches</button>
+          <button class="filter" data-kind="follow"><i class="dot dot-follow"></i> Follows</button>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="superfans-only" />
+          <span>Super-fans only</span>
+        </label>
+        <button class="reset" id="reset-view" title="Reset view">Recenter</button>
+      </div>
+
+      <canvas id="graph" aria-label="Force-directed graph of supporters and projects"></canvas>
+
+      <div class="tooltip" id="tooltip" hidden></div>
+
+      <div class="legend">
+        <span><i class="swatch swatch-me"></i> Me</span>
+        <span><i class="swatch swatch-project"></i> A project</span>
+        <span><i class="swatch swatch-person"></i> A supporter</span>
+        <span><i class="swatch swatch-super"></i> Super-fan</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Wall of thanks ────────────────────────────────────────────────── -->
+  <section class="wall" id="wall">
+    <div class="section-head">
+      <h2>The people behind the numbers</h2>
+      <p>Everyone, by name. Sorted by how often they showed up — the gold rings did it more than once.
+        <span class="hint">Type to find someone.</span></p>
+    </div>
+    <div class="wall-tools">
+      <input type="search" id="wall-search" placeholder="Search a name or handle…" autocomplete="off" />
+      <span class="wall-count" id="wall-count"></span>
+    </div>
+    <div class="wall-grid" id="wall-grid"></div>
+    <button class="show-more" id="wall-more" hidden>Show everyone</button>
+  </section>
+
+  <!-- ── Reciprocal: the shoulders I stand on ──────────────────────────── -->
+  <section class="reciprocal" id="reciprocal">
+    <div class="section-head">
+      <h2>I'm grateful too</h2>
+      <p>The open source I actually lean on across my own repos — maintainers I owe a star.
+        <span class="hint">Sorted to surface the smaller projects first, not the giants.</span></p>
+    </div>
+
+    <div class="dep-tabs" id="dep-tabs" role="tablist">
+      <button class="dep-tab is-active" data-mode="worth">Worth a star</button>
+      <button class="dep-tab" data-mode="used">Most relied upon</button>
+      <button class="dep-tab" data-mode="second" hidden>Two hops away</button>
+      <span class="dep-meta" id="dep-meta"></span>
+    </div>
+    <p class="dep-note" id="dep-note"></p>
+    <div class="dep-grid" id="dep-grid"></div>
+    <button class="show-more" id="dep-more" hidden></button>
+
+    <div class="recip-also">
+      <h3>And the people &amp; work I lean on</h3>
+      <div class="recip-people" id="recip-mine"></div>
+      <button class="show-more" id="mine-more" hidden></button>
+    </div>
+  </section>
+
+  <!-- ── Presence: where else to find me ───────────────────────────────── -->
+  <section class="presence" id="presence">
+    <div class="section-head">
+      <h2>Where else to find me</h2>
+      <p>The other corners of my world.</p>
+    </div>
+    <div class="presence-grid" id="presence-grid"></div>
+  </section>
+
+  <!-- ── Where the love landed (about the work, kept to the end) ────────── -->
+  <section class="landed" id="landed">
+    <div class="section-head">
+      <h2>Where the love landed</h2>
+      <p>And to close — where all that support went. The projects you carried.</p>
+    </div>
+    <ol class="landed-list" id="landed-list"></ol>
+    <button class="show-more" id="landed-archived" hidden></button>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <p class="foot-thanks">Made with gratitude<span class="spark">✦</span></p>
+  <p class="foot-how">
+    A nightly GitHub Action collects the full picture into an
+    <abbr title="AES-256-GCM encrypted snapshot, committed but unreadable without the key">encrypted snapshot</abbr>,
+    then publishes only this curated, people-centric graph. Rendered with d3-force on a canvas.
+  </p>
+  <p class="foot-links" id="foot-links"></p>
+</footer>
+
+<script src="assets/d3.v7.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

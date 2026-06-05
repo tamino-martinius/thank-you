@@ -1,0 +1,21 @@
+{
+  "name": "thank-you",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A thank-you to everyone who starred, followed and cheered on my work — collected across GitHub, CodePen, X and LinkedIn, visualized as a constellation of gratitude.",
+  "scripts": {
+    "collect": "tsx src/collect.ts",
+    "aggregate": "tsx src/aggregate.ts",
+    "sync": "tsx src/collect.ts && tsx src/aggregate.ts",
+    "serve": "tsx scripts/serve.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.19",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
