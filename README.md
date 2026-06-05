@@ -1,16 +1,16 @@
 # thank you ✦
 
 A standing thank-you to everyone who ever **starred, forked, watched or followed**
-your work — rendered as a *cloud of the people behind the numbers*.
+my work — rendered as a *cloud of the people behind the numbers*.
 
 It is deliberately **not** a stats dashboard. No commit graphs, no streaks, no vanity charts.
-Every node is a **human** who showed up for something you made, and every line traces their
+Every node is a **human** who showed up for something I made, and every line traces their
 gesture back to the work it landed on. Fork it, point it at your accounts, and you get your own.
 
 ![the cloud](site/assets/preview.png)
 
 - **Live example:** [thank-you.tamino.dev](https://thank-you.tamino.dev)
-- **Sources:** GitHub (full, incl. the open source you depend on), CodePen / X / LinkedIn (via export)
+- **Sources:** GitHub (full, incl. the open source I depend on), CodePen / X / LinkedIn (via export)
 - **Stack:** TypeScript collectors · a nightly GitHub Action · a zero-build static site (d3 on canvas)
 
 ---
@@ -95,10 +95,10 @@ A nightly pipeline turns your accounts into one published file:
 
 > Only data that points back to a **person**. No anonymous aggregates.
 
-| Source | What it reads | People you can thank |
+| Source | What it reads | People I can thank |
 | --- | --- | --- |
 | **GitHub** | repos, stargazers (with timestamps), forkers, watchers, followers | ✅ everyone |
-| **GitHub (deps)** | every repo's `package.json` → npm → the GitHub repo + maintainer | ✅ maintainers you rely on |
+| **GitHub (deps)** | every repo's `package.json` → npm → the GitHub repo + maintainer | ✅ maintainers I rely on |
 | **CodePen** | — (Cloudflare-walled, no server access) | via export¹ |
 | **X / Twitter** | — (no usable public API) | via export² |
 | **LinkedIn** | — (no public API) | via export² |
@@ -109,20 +109,20 @@ A nightly pipeline turns your accounts into one published file:
 
 ## The page
 
-The page is about the **people**, so they carry it: faces are sized up while you and the projects
+The page is about the **people**, so they carry it: faces are sized up while I and the projects
 recede into quiet discs.
 
-- **The cloud** — you at the center, **faces** are super-fans (people who showed up more than
-  once), **dots** are everyone else (coral = follows you, warm = starred/forked). Lines are
+- **The cloud** — me at the center, **faces** are super-fans (people who showed up more than
+  once), **dots** are everyone else (coral = follows me, warm = starred/forked). Lines are
   coloured by gesture: ★ star · ⑂ fork · 👁 watch · ♥ follow. Drag the cloud, scroll to zoom, hover
   anyone, filter by gesture, or isolate super-fans.
 - **The wall** names **everyone**, searchable, with the same hover card as the cloud. The **top
   three amounts** wear gold / silver / bronze podium circles — ties share a circle.
-- **I'm grateful too** — the open source you depend on, as star candidates. **Worth a star** =
+- **I'm grateful too** — the open source I depend on, as star candidates. **Worth a star** =
   still maintained (a push in the last `activeWithinMonths` months) and under `gemMaxStars` stars,
-  spanning both your direct deps and their **second-grade** deps ("Two hops away"). It closes with
-  a merged list of the people you follow + repos you starred, ranked by reach.
-- **Where the love landed** ranks your projects, with GitHub's own **linguist language colours**
+  spanning both my direct deps and their **second-grade** deps ("Two hops away"). It closes with
+  a merged list of the people I follow + repos I starred, ranked by reach.
+- **Where the love landed** ranks my projects, with GitHub's own **linguist language colours**
   and an archived-repos toggle.
 
 ---
