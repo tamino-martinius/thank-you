@@ -2,7 +2,7 @@
 # Uses .gitignore syntax. (Conductor's default is already `.env*`; this makes it
 # explicit and adds the optional import folder.)
 
-# Secrets for `npm run collect` / `npm run sync` (ENCRYPTION_KEY, optional GH_PAT).
+# Optional GH_PAT for `npm run collect` / `npm run sync` (higher API rate limit).
 .env
 .env.*
 

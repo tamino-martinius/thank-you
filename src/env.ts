@@ -5,8 +5,8 @@
 // "just work" the same way locally, in CI, and inside a Conductor workspace that
 // had `.env` copied in via files-to-copy — no `export` dance required.
 //
-// Imported FIRST by collect.ts / aggregate.ts so the values are present before
-// util.ts / crypto.ts read them.
+// Imported FIRST by collect.ts / aggregate.ts so the values (e.g. GH_PAT) are
+// present before util.ts reads them.
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";

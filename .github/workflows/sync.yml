@@ -1,10 +1,9 @@
-# Nightly: collect the full (encrypted) snapshot, distil the public graph,
-# commit both, and redeploy the site with fresh data.
+# Nightly: collect the full snapshot, distil the public graph, commit it,
+# and redeploy the site with fresh data.
 #
-# Required repository secrets:
-#   ENCRYPTION_KEY  – 32-byte hex (see README). Encrypts data/snapshot.enc.
-#   GH_PAT          – optional. A classic PAT (public_repo / no scope is enough)
-#                     gives a 5000/hr rate limit. Falls back to GITHUB_TOKEN.
+# Repository secrets (optional):
+#   GH_PAT – a classic PAT (no scope needed for public data) for a 5000/hr rate
+#            limit. Falls back to the built-in GITHUB_TOKEN.
 name: Sync & deploy
 
 on:
@@ -34,22 +33,19 @@ jobs:
 
       - run: npm ci
 
-      - name: Collect full snapshot (encrypted)
+      - name: Collect the full snapshot
         env:
-          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
           GH_PAT: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
         run: npm run collect
 
       - name: Aggregate the public graph
-        env:
-          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
         run: npm run aggregate
 
       - name: Commit refreshed data
         run: |
           git config user.name "thank-you-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/snapshot.enc data/public/graph.json site/data/graph.json
+          git add data/public/graph.json site/data/graph.json
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else

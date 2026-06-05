@@ -1,6 +1,9 @@
 // Small shared helpers: a resilient GitHub REST client with pagination + retry,
 // and generic fetch utilities used by the other collectors.
 
+/** Plain intermediate written by collect.ts, read by aggregate.ts (gitignored). */
+export const SNAPSHOT_PATH = "data/snapshot.json";
+
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export function log(...args: unknown[]) {
