@@ -209,11 +209,9 @@ export interface GraphDependency {
   gem: boolean;
 }
 
+/** A "where else to find me" link — not data, just a profile to link out to. */
 export interface PresenceLink {
   platform: string;
   label: string;
   url: string;
-  /** "connected" = data is flowing; "export" = needs a manual export; "link" = just a link. */
-  status: "connected" | "export" | "link";
-  note?: string;
 }

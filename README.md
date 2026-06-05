@@ -10,7 +10,7 @@ gesture back to the work it landed on. Fork it, point it at your accounts, and y
 ![the cloud](site/assets/preview.png)
 
 - **Live example:** [thank-you.tamino.dev](https://thank-you.tamino.dev)
-- **Sources:** GitHub (full, incl. the open source I depend on), CodePen / X / LinkedIn (via export)
+- **Sources:** GitHub — every stargazer, forker, watcher, follower, and the open source I depend on
 - **Stack:** TypeScript collectors · a nightly GitHub Action · a zero-build static site (d3 on canvas)
 
 ---
@@ -59,21 +59,13 @@ Leave `cname` as `null` to stay on the default `github.io` URL.
 
 A nightly pipeline turns your accounts into one published file:
 
-```
-                ┌──────────────┐                 ┌─────────────────────┐
-  collectors ──▶│  collect.ts  │ ──────────────▶ │ data/snapshot.json  │  (gitignored, transient)
-  (gh/cp/…)     └──────────────┘                 └─────────────────────┘
-                                                            │ curate
-                                                            ▼
-                                                   ┌────────────────────┐
-                                                   │   aggregate.ts     │
-                                                   └────────────────────┘
-                                                            │
-                                                            ▼
-                                            data/public/graph.json  +  site/data/graph.json  (committed)
-                                                            │
-                                                            ▼
-                                                   the website (d3 on canvas)
+```mermaid
+flowchart TD
+    gh(["GitHub"]) --> collect["collect.ts"]
+    collect --> snapshot[("data/snapshot.json<br/>gitignored · transient")]
+    snapshot -->|curate| aggregate["aggregate.ts"]
+    aggregate --> pub[("data/public/graph.json<br/>+ site/data/graph.json<br/>committed")]
+    pub --> site(["the website<br/>d3-force on canvas"])
 ```
 
 1. **`collect.ts`** runs every enabled collector and merges them into one people-centric `Snapshot`
@@ -99,11 +91,6 @@ A nightly pipeline turns your accounts into one published file:
 | --- | --- | --- |
 | **GitHub** | repos, stargazers (with timestamps), forkers, watchers, followers | ✅ everyone |
 | **GitHub (deps)** | every repo's `package.json` → npm → the GitHub repo + maintainer | ✅ maintainers I rely on |
-| **CodePen** | — (Cloudflare-walled, no server access) | via export¹ |
-| **X / Twitter** | — (no usable public API) | via export² |
-| **LinkedIn** | — (no public API) | via export² |
-
-¹ Drop `data/import/codepen.json`.  ² See [Bringing X / LinkedIn / CodePen](#bringing-x--linkedin--codepen).
 
 ---
 
@@ -173,31 +160,6 @@ npm run sync      # collect + aggregate → refreshes data/snapshot.json + graph
 [`conductor.json`](conductor.json) ships setup (`npm install`) and run
 (`PORT="$CONDUCTOR_PORT" npm run serve`, `concurrent`) scripts, and
 [`.worktreeinclude`](.worktreeinclude) copies your gitignored `.env` into every new workspace.
-
----
-
-## Bringing X / LinkedIn / CodePen
-
-These platforms have no public API for "who liked / followed you" (and CodePen is Cloudflare-walled),
-so you bring an export. Normalise it into this shape and drop it at `data/import/<source>.json`
-(the folder is git-ignored — raw exports never get committed):
-
-```json
-{
-  "projects": [
-    { "id": "tw:post:123", "title": "A thread about dedent", "url": "https://x.com/…", "reactions": 42 }
-  ],
-  "people": [
-    { "login": "someone", "name": "Some One", "avatar": "https://…", "url": "https://x.com/someone" }
-  ],
-  "interactions": [
-    { "person": "someone", "project": "tw:post:123", "kind": "like" }
-  ]
-}
-```
-
-`project` may be `"me"` for a plain follow. Flip `enabled: true` for that source in `config.json`
-and run `npm run sync` — those people are thanked exactly like everyone else.
 
 ---
 

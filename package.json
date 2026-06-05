@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "A thank-you to everyone who starred, followed and cheered on my work — collected across GitHub, CodePen, X and LinkedIn, visualized as a constellation of gratitude.",
+  "description": "A thank-you to everyone who starred, forked, watched and followed my work on GitHub — visualized as a constellation of gratitude.",
   "scripts": {
     "collect": "tsx src/collect.ts",
     "aggregate": "tsx src/aggregate.ts",

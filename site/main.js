@@ -68,7 +68,7 @@ async function boot() {
 
 /* ── Top bar, footer, hero numbers ─────────────────────────────────────── */
 function hydrateChrome(g) {
-  const labels = { github: "GitHub", codepen: "CodePen", twitter: "X", linkedin: "LinkedIn" };
+  const labels = { github: "GitHub" };
   // The "github" chip links to the source of this very page.
   $("#source-chips").innerHTML = g.sources
     .map((s) =>
