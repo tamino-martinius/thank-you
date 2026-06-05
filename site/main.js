@@ -613,7 +613,7 @@ function buildPresence(g) {
   const items = g.presence || [];
   const grid = $("#presence-grid");
   if (!grid) return;
-  if (!items.length) { grid.closest("section").hidden = true; return; }
+  if (!items.length) { grid.closest("section")?.setAttribute("hidden", ""); return; }
   grid.innerHTML = items
     .map(
       (p) => `<a class="presence-card" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener">
