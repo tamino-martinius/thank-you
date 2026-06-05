@@ -3,6 +3,12 @@
 A standing thank-you to everyone who ever **starred, forked, watched or followed**
 my work — rendered as a *cloud of the people behind the numbers*.
 
+It started while I was **archiving old repositories** — projects I don't plan to return to.
+Closing them down, I kept noticing stars and forks I'd never really registered: small things I
+made years ago that someone, somewhere, had actually liked. You ship work and it can feel like it
+falls into a *void* — and it turns out the void was full of **people** the whole time. I just
+hadn't looked. So before walking away, I built them this.
+
 It is deliberately **not** a stats dashboard. No commit graphs, no streaks, no vanity charts.
 Every node is a **human** who showed up for something I made, and every line traces their
 gesture back to the work it landed on. Fork it, point it at your accounts, and you get your own.
@@ -182,7 +188,8 @@ endpoints (`/users/<you>/repos`, not your private repos), so there's no secret t
 **Opt-out.** It still puts real people's faces on a public, shareable page. Anyone who'd rather not
 be featured can be removed by adding their GitHub login to `aggregate.excludePeople` in
 [`config.json`](config.json) (they vanish from the cloud, wall, counts, and reciprocal lists on the
-next run). If you publish this, a one-line "prefer not to be here? open an issue" note is a kind touch.
+next run). The published page already carries a quiet **"prefer not to be here?"** link in its
+footer — it opens a pre-filled issue on your fork, so anyone can ask off without hunting for how.
 
 ## License
 
