@@ -422,7 +422,10 @@ function buildWall(g) {
   function paint() {
     const shown = expanded ? people.length : Math.min(STEP, people.length);
     grid.innerHTML = people.slice(0, shown).map(card).join("");
-    $("#wall-count").textContent = `${people.length.toLocaleString()} people`;
+    // The graph caps people (maxPeopleInGraph); show the true total, note if capped.
+    const total = g.stats.supporters;
+    $("#wall-count").textContent =
+      total > people.length ? `top ${people.length.toLocaleString()} of ${total.toLocaleString()} people` : `${total.toLocaleString()} people`;
     const more = $("#wall-more");
     more.hidden = people.length <= STEP;
     more.textContent = expanded
