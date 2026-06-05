@@ -170,6 +170,11 @@ Only the curated `data/public/graph.json` is committed; the full intermediate `d
 is gitignored and regenerated each run. Nothing private is collected — `collect` reads only public
 endpoints (`/users/<you>/repos`, not your private repos), so there's no secret to manage.
 
+**Opt-out.** It still puts real people's faces on a public, shareable page. Anyone who'd rather not
+be featured can be removed by adding their GitHub login to `aggregate.excludePeople` in
+[`config.json`](config.json) (they vanish from the cloud, wall, counts, and reciprocal lists on the
+next run). If you publish this, a one-line "prefer not to be here? open an issue" note is a kind touch.
+
 ## License
 
 [MIT](LICENSE) — fork it, make it yours.
