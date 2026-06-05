@@ -1,0 +1,13 @@
+node_modules/
+.context/
+.playwright-mcp/
+/*.png
+*.log
+.env
+.DS_Store
+
+# Generated at deploy time from config.json "cname" (avoids fork domain clashes).
+site/CNAME
+
+# Optional source exports (may contain personal data) — never commit raw.
+data/import/

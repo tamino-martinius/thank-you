@@ -1,0 +1,10 @@
+# Gitignored files Conductor copies from the repo root into every new workspace.
+# Uses .gitignore syntax. (Conductor's default is already `.env*`; this makes it
+# explicit and adds the optional import folder.)
+
+# Secrets for `npm run collect` / `npm run sync` (ENCRYPTION_KEY, optional GH_PAT).
+.env
+.env.*
+
+# Optional manual exports (X / LinkedIn / CodePen) if you keep them locally.
+data/import/

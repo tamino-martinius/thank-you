@@ -1,0 +1,79 @@
+# Nightly: collect the full (encrypted) snapshot, distil the public graph,
+# commit both, and redeploy the site with fresh data.
+#
+# Required repository secrets:
+#   ENCRYPTION_KEY  – 32-byte hex (see README). Encrypts data/snapshot.enc.
+#   GH_PAT          – optional. A classic PAT (public_repo / no scope is enough)
+#                     gives a 5000/hr rate limit. Falls back to GITHUB_TOKEN.
+name: Sync & deploy
+
+on:
+  schedule:
+    - cron: "17 4 * * *" # 04:17 UTC nightly
+  workflow_dispatch:
+
+permissions:
+  contents: write # commit the refreshed data
+  pages: write # deploy the site
+  id-token: write # auth the Pages deploy
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Collect full snapshot (encrypted)
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          GH_PAT: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+        run: npm run collect
+
+      - name: Aggregate the public graph
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+        run: npm run aggregate
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name "thank-you-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/snapshot.enc data/public/graph.json site/data/graph.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: sync gratitude data ($(date -u +%Y-%m-%d))"
+            git push
+          fi
+
+      - name: Apply custom domain (config.json "cname")
+        run: |
+          CNAME="$(node -p "require('./config.json').cname || ''")"
+          if [ -n "$CNAME" ]; then echo "$CNAME" > site/CNAME; echo "custom domain → $CNAME"; fi
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: collect
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

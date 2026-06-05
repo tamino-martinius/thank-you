@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "setup": "npm install",
+    "run": "PORT=\"$CONDUCTOR_PORT\" npm run serve"
+  },
+  "runScriptMode": "concurrent"
+}

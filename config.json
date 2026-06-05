@@ -1,0 +1,48 @@
+{
+  "owner": {
+    "name": "Tamino Martinius",
+    "tagline": "Staff Engineer. Open-source tinkerer. Forever grateful."
+  },
+  "repoUrl": "https://github.com/tamino-martinius/thank-you",
+  "cname": "thank-you.tamino.dev",
+  "sources": {
+    "github": {
+      "enabled": true,
+      "username": "tamino-martinius",
+      "includeForks": false,
+      "skipRepos": []
+    },
+    "codepen": {
+      "enabled": true,
+      "username": "TaminoMartinius"
+    },
+    "twitter": {
+      "enabled": false,
+      "username": "TaminoMartinius",
+      "note": "X/Twitter likes & followers require a paid API tier or an exported archive. Drop an archive at data/import/twitter.json to include them."
+    },
+    "linkedin": {
+      "enabled": false,
+      "username": "tamino-martinius",
+      "note": "LinkedIn has no public API. Export your connections/reactions and drop them at data/import/linkedin.json to include them."
+    }
+  },
+  "aggregate": {
+    "superFanThreshold": 2,
+    "maxPeopleInGraph": 1200,
+    "gemMaxStars": 1000,
+    "activeWithinMonths": 12
+  },
+  "dependencies": {
+    "includeTransitive": true,
+    "transitiveLimit": 80
+  },
+  "presence": [
+    { "platform": "github", "label": "GitHub", "url": "https://github.com/tamino-martinius", "status": "connected" },
+    { "platform": "npm", "label": "npm", "url": "https://www.npmjs.com/~tamino-martinius", "status": "link", "note": "packages others build on" },
+    { "platform": "codepen", "label": "CodePen", "url": "https://codepen.io/TaminoMartinius", "status": "export", "note": "behind Cloudflare — add loves via data/import/codepen.json" },
+    { "platform": "twitter", "label": "X / Twitter", "url": "https://x.com/TaminoMartinius", "status": "export", "note": "no public API — add via data/import/twitter.json" },
+    { "platform": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/tamino-martinius", "status": "export", "note": "no public API — add via data/import/linkedin.json" },
+    { "platform": "web", "label": "tamino.dev", "url": "https://tamino.dev", "status": "link" }
+  ]
+}
