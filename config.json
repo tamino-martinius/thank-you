@@ -31,7 +31,8 @@
     "superFanThreshold": 2,
     "maxPeopleInGraph": 1200,
     "gemMaxStars": 1000,
-    "activeWithinMonths": 12
+    "activeWithinMonths": 12,
+    "excludePeople": []
   },
   "dependencies": {
     "includeTransitive": true,

@@ -35,10 +35,14 @@ async function ghGet(url: string, opts: GhOptions = {}): Promise<Response> {
     const res = await fetch(url, { headers });
     if (res.status === 403 || res.status === 429) {
       const retryAfter = Number(res.headers.get("retry-after"));
-      const remaining = Number(res.headers.get("x-ratelimit-remaining"));
+      const remaining = res.headers.get("x-ratelimit-remaining"); // string | null
       const reset = Number(res.headers.get("x-ratelimit-reset"));
+      // A 403 that ISN'T rate-limited (bad/expired token, "resource not accessible")
+      // won't fix itself — return it so the caller surfaces the real error fast.
+      const isRateLimit = res.status === 429 || retryAfter > 0 || remaining === "0";
+      if (!isRateLimit) return res;
       let waitMs = retryAfter ? retryAfter * 1000 : 2 ** attempt * 1000;
-      if (!retryAfter && remaining === 0 && reset) {
+      if (!retryAfter && remaining === "0" && reset) {
         waitMs = Math.max(0, reset * 1000 - Date.now()) + 1000;
       }
       log(`Rate limited on ${url} — waiting ${Math.round(waitMs / 1000)}s (attempt ${attempt + 1})`);

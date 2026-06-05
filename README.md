@@ -25,19 +25,26 @@ You can have your own graph live in about five minutes — no server, no databas
    `sources.github.username`, your `presence` links, and `repoUrl`. That's the only file you need
    to touch — and **no secrets are required**.
 
-3. **Turn on Pages** — **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+3. **Enable Actions on the fork** — open the **Actions** tab and click **"I understand my
+   workflows, go ahead and enable them."** GitHub **disables scheduled workflows on forks** by
+   default, so the nightly refresh won't fire until you do this once.
 
-4. **Run it** — **Actions → Sync & deploy → Run workflow**. It collects your data, publishes the
-   curated graph, and deploys.
+4. **Turn on Pages** — **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-5. **Done** — your page is live at `https://<your-username>.github.io/<repo>/`, and it refreshes
-   itself **every night**.
+5. **Run it** — **Actions → Sync & deploy → Run workflow**. It collects your data, publishes the
+   curated graph, and deploys. *(Your `config.json` edits only take effect after this runs — until
+   then `serve`/the committed sample still shows the original author's data.)*
 
-> *(Optional)* Add a `GH_PAT` secret — a classic token with **no scopes** — for a 5,000/hr API
-> rate limit instead of the built-in token's ~1,000/hr. Handy if you have a lot of repos/stars.
+6. **Done** — your page is live at `https://<your-username>.github.io/<repo>/`, and it refreshes
+   itself **every night** (as long as you did step 3).
+
+> *(Optional, but recommended for large accounts)* Add a `GH_PAT` secret — a classic token with
+> **no scopes** — for a 5,000/hr API limit instead of the built-in token's ~1,000/hr. A run on a
+> big account can otherwise stall waiting for the rate limit to reset.
 >
 > Haven't configured anything yet? `npm run serve` already renders the committed sample graph, so
-> a fresh fork shows *this* page before you touch a thing.
+> a fresh fork shows *this* page before you touch a thing (it'll show the original author's links
+> until your first sync overwrites the data).
 
 ### Custom domain (optional)
 
@@ -121,13 +128,15 @@ Everything tweakable lives in [`config.json`](config.json):
 | Key | What it controls |
 | --- | --- |
 | `owner.name`, `owner.tagline` | your name + the line under the title |
-| `sources.<platform>.enabled`, `.username` | which sources run, and the handles |
+| `sources.github.username` | the GitHub account to thank people from |
+| `sources.{codepen,twitter,linkedin}` | stubs — disabled by default; their *data* needs a manual export at `data/import/<source>.json` (`src/collectors/imports.ts`) |
 | `aggregate.superFanThreshold` | interactions needed to earn a face (default 2) |
 | `aggregate.gemMaxStars` | the "worth a star" star ceiling (default 1,000) |
 | `aggregate.activeWithinMonths` | how recent a push counts as "active" (default 12) |
 | `aggregate.maxPeopleInGraph` | cap on people drawn into the cloud |
+| `aggregate.excludePeople` | GitHub logins to leave out of the public graph (opt-out) |
 | `dependencies.includeTransitive`, `.transitiveLimit` | second-grade ("two hops away") deps |
-| `presence` | the "where else to find me" links |
+| `presence` | the "where else to find me" links (just labels + URLs) |
 | `repoUrl` | the titlebar **GitHub ↗** link |
 | `cname` | custom domain (or `null`) |
 
@@ -169,6 +178,17 @@ Everything surfaced is already public on the source platforms (GitHub stargazers
 Only the curated `data/public/graph.json` is committed; the full intermediate `data/snapshot.json`
 is gitignored and regenerated each run. Nothing private is collected — `collect` reads only public
 endpoints (`/users/<you>/repos`, not your private repos), so there's no secret to manage.
+
+**Opt-out.** It still puts real people's faces on a public, shareable page. Anyone who'd rather not
+be featured can be removed by adding their GitHub login to `aggregate.excludePeople` in
+[`config.json`](config.json) (they vanish from the cloud, wall, counts, and reciprocal lists on the
+next run). If you publish this, a one-line "prefer not to be here? open an issue" note is a kind touch.
+
+## License
+
+[MIT](LICENSE) — fork it, make it yours.
+
+---
 
 Built with [d3](https://d3js.org) · fonts: Fraunces, Hanken Grotesk, IBM Plex Mono.
 Made with gratitude. ✦

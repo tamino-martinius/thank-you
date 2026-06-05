@@ -106,39 +106,45 @@ export async function collectGithub(
       createdAt: repo.created_at,
     });
 
-    // Stargazers (with starred_at via the star+json media type).
-    if (repo.stargazers_count > 0) {
-      const gazers = await ghPaginate<{ starred_at: string; user: GhUser }>(
-        `/repos/${username}/${repo.name}/stargazers`,
-        { starred: true },
-      );
-      for (const g of gazers) {
-        if (!g?.user) continue;
-        const id = addPerson(g.user);
-        interactions.push({ personId: id, projectId: pid, kind: "star", source: "github", at: g.starred_at });
+    // One repo's failure (rate limit, transient 5xx) shouldn't kill the whole run —
+    // log it, keep the project node, and move on.
+    try {
+      // Stargazers (with starred_at via the star+json media type).
+      if (repo.stargazers_count > 0) {
+        const gazers = await ghPaginate<{ starred_at: string; user: GhUser }>(
+          `/repos/${username}/${repo.name}/stargazers`,
+          { starred: true },
+        );
+        for (const g of gazers) {
+          if (!g?.user) continue;
+          const id = addPerson(g.user);
+          interactions.push({ personId: id, projectId: pid, kind: "star", source: "github", at: g.starred_at });
+        }
       }
-    }
 
-    // Forkers.
-    if (repo.forks_count > 0) {
-      const forks = await ghPaginate<{ owner: GhUser; created_at: string }>(
-        `/repos/${username}/${repo.name}/forks`,
-      );
-      for (const f of forks) {
-        if (!f?.owner) continue;
-        const id = addPerson(f.owner);
-        interactions.push({ personId: id, projectId: pid, kind: "fork", source: "github", at: f.created_at });
+      // Forkers.
+      if (repo.forks_count > 0) {
+        const forks = await ghPaginate<{ owner: GhUser; created_at: string }>(
+          `/repos/${username}/${repo.name}/forks`,
+        );
+        for (const f of forks) {
+          if (!f?.owner) continue;
+          const id = addPerson(f.owner);
+          interactions.push({ personId: id, projectId: pid, kind: "fork", source: "github", at: f.created_at });
+        }
       }
-    }
 
-    // Watchers (subscribers — people who explicitly clicked "watch").
-    const watchers = await ghPaginate<GhUser>(`/repos/${username}/${repo.name}/subscribers`);
-    for (const w of watchers) {
-      if (w.login === username) continue; // I watch my own repos by default
-      const id = addPerson(w);
-      interactions.push({ personId: id, projectId: pid, kind: "watch", source: "github", at: null });
+      // Watchers (subscribers — people who explicitly clicked "watch").
+      const watchers = await ghPaginate<GhUser>(`/repos/${username}/${repo.name}/subscribers`);
+      for (const w of watchers) {
+        if (w.login === username) continue; // I watch my own repos by default
+        const id = addPerson(w);
+        interactions.push({ personId: id, projectId: pid, kind: "watch", source: "github", at: null });
+      }
+      log(`GitHub:   ${repo.name} — ${repo.stargazers_count}★ ${repo.forks_count}⑂ ${watchers.length}👁`);
+    } catch (err) {
+      log(`GitHub:   ${repo.name} — skipped (${(err as Error).message})`);
     }
-    log(`GitHub:   ${repo.name} — ${repo.stargazers_count}★ ${repo.forks_count}⑂ ${watchers.length}👁`);
   }
 
   // ── My followers (→ follow targets "me") ─────────────────────────────────────

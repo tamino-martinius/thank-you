@@ -28,6 +28,15 @@ async function main() {
 
   const { superFanThreshold, maxPeopleInGraph } = config.aggregate;
 
+  // Opt-out: GitHub logins (case-insensitive) to exclude from the public graph.
+  const excluded = new Set(
+    (((config.aggregate as { excludePeople?: string[] }).excludePeople) ?? []).map((l) => l.toLowerCase()),
+  );
+  const isExcluded = (login?: string | null) => !!login && excluded.has(login.toLowerCase());
+
+  // O(1) person lookup — a linear find() per interaction hangs popular forks.
+  const peopleById = new Map(snapshot.people.map((p) => [p.id, p]));
+
   // Tally how many distinct supporters each project has.
   const supportersByProject = new Map<string, Set<string>>();
 
@@ -45,10 +54,12 @@ async function main() {
   >();
 
   const links: GraphLink[] = [];
+  let interactionCount = 0;
 
   for (const it of snapshot.interactions) {
-    const person = snapshot.people.find((p) => p.id === it.personId);
-    if (!person) continue;
+    const person = peopleById.get(it.personId);
+    if (!person || isExcluded(person.login)) continue;
+    interactionCount += 1;
 
     let agg = peopleAgg.get(person.id);
     if (!agg) {
@@ -119,8 +130,10 @@ async function main() {
     (l) => keptIds.has(l.source) && (l.target === "me" || projectIds.has(l.target)),
   );
 
-  // Reciprocal: where my own appreciation went.
-  const givenFollowing: GraphPerson[] = snapshot.given.following.map((f) => ({
+  // Reciprocal: where my own appreciation went. (Honour the opt-out here too.)
+  const givenFollowing: GraphPerson[] = snapshot.given.following
+    .filter((f) => !isExcluded(f.login))
+    .map((f) => ({
     id: f.id,
     login: f.login,
     name: f.name,
@@ -136,6 +149,7 @@ async function main() {
   }));
 
   const givenStarred: GraphProject[] = snapshot.given.starred
+    .filter(({ owner }) => !isExcluded(owner.login))
     .map(({ project, owner }) => ({
       id: project.id,
       source: project.source,
@@ -178,7 +192,9 @@ async function main() {
   // Active first, then most-relied-upon, then smallest. Cap each degree on its own.
   const byRank = (a: GraphDependency, b: GraphDependency) =>
     Number(b.active) - Number(a.active) || b.usageCount - a.usageCount || a.stars - b.stars;
-  const allDeps = (snapshot.given.dependencies ?? []).map(toGraphDep);
+  const allDeps = (snapshot.given.dependencies ?? [])
+    .filter((d) => !isExcluded(d.owner.login))
+    .map(toGraphDep);
   const dependencies: GraphDependency[] = [
     ...allDeps.filter((d) => d.degree === 1).sort(byRank).slice(0, 120),
     ...allDeps.filter((d) => d.degree === 2).sort(byRank).slice(0, 80),
@@ -195,7 +211,7 @@ async function main() {
     me: {
       id: snapshot.me.id,
       login: snapshot.me.login,
-      name: snapshot.me.name ?? snapshot.me.login,
+      name: config.owner.name || snapshot.me.name || snapshot.me.login,
       avatar: snapshot.me.avatar,
       url: snapshot.me.url,
       bio: snapshot.me.bio ?? null,
@@ -204,7 +220,7 @@ async function main() {
     sources,
     stats: {
       supporters: peopleAgg.size,
-      interactions: snapshot.interactions.length,
+      interactions: interactionCount,
       projects: projects.length,
       superFans,
     },

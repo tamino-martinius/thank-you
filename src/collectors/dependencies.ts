@@ -47,8 +47,9 @@ async function resolveNpm(pkg: string): Promise<string | null> {
     const j = (await res.json()) as { repository?: string | { url?: string } };
     const raw = typeof j.repository === "string" ? j.repository : j.repository?.url;
     if (!raw) return null;
-    const m = String(raw).match(/github\.com[:/]+([^/]+)\/([^/#.]+)/i) || String(raw).match(/^github:([^/]+)\/([^/#.]+)/i);
-    return m ? `${m[1]}/${m[2]}` : null;
+    // Repo name may contain dots (socket.io, three.js); take it whole, then trim `.git` / `#fragment`.
+    const m = String(raw).match(/github\.com[:/]+([^/]+)\/([^/#?]+)/i) || String(raw).match(/^github:([^/]+)\/([^/#?]+)/i);
+    return m ? `${m[1]}/${m[2].replace(/\.git$/i, "")}` : null;
   } catch {
     return null;
   }
