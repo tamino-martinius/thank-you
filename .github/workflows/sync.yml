@@ -53,10 +53,17 @@ jobs:
             git push
           fi
 
-      - name: Apply custom domain (config.json "cname")
+      - name: Apply custom domain & absolute social URLs
         run: |
           CNAME="$(node -p "require('./config.json').cname || ''")"
-          if [ -n "$CNAME" ]; then echo "$CNAME" > site/CNAME; echo "custom domain → $CNAME"; fi
+          if [ -n "$CNAME" ]; then
+            echo "$CNAME" > site/CNAME
+            BASE="https://$CNAME"
+          else
+            BASE="https://${GITHUB_REPOSITORY%%/*}.github.io/${GITHUB_REPOSITORY#*/}"
+          fi
+          node -e "const fs=require('fs');const f='site/index.html';fs.writeFileSync(f,fs.readFileSync(f,'utf8').replaceAll('__SITE_URL__',process.argv[1]))" "$BASE"
+          echo "site URL → $BASE"
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3

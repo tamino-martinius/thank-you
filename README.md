@@ -170,5 +170,11 @@ Only the curated `data/public/graph.json` is committed; the full intermediate `d
 is gitignored and regenerated each run. Nothing private is collected — `collect` reads only public
 endpoints (`/users/<you>/repos`, not your private repos), so there's no secret to manage.
 
+## License
+
+[MIT](LICENSE) — fork it, make it yours.
+
+---
+
 Built with [d3](https://d3js.org) · fonts: Fraunces, Hanken Grotesk, IBM Plex Mono.
 Made with gratitude. ✦
