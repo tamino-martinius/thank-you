@@ -87,7 +87,10 @@ function hydrateChrome(g) {
     `<a href="${esc(safeUrl(g.me.url))}" target="_blank" rel="noopener">@${esc(g.me.login)}</a>` +
     (g.repoUrl ? `<span class="sep">·</span><a href="${esc(safeUrl(g.repoUrl))}" target="_blank" rel="noopener">source</a>` : "") +
     `<span class="sep">·</span><a href="data/graph.json" target="_blank" rel="noopener">the public data</a>` +
-    `<span class="sep">·</span><a href="https://d3js.org" target="_blank" rel="noopener">built with d3</a>`;
+    `<span class="sep">·</span><a href="https://d3js.org" target="_blank" rel="noopener">built with d3</a>` +
+    (g.repoUrl
+      ? `<span class="sep">·</span><a href="${esc(safeUrl(g.repoUrl + "/issues/new?title=" + encodeURIComponent("Please remove me")))}" target="_blank" rel="noopener">prefer not to be here?</a>`
+      : "");
 }
 
 function countUp(g) {
