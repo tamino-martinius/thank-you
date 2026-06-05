@@ -38,8 +38,11 @@
     "transitiveLimit": 80
   },
   "presence": [
-    { "platform": "github", "label": "GitHub", "url": "https://github.com/tamino-martinius", "status": "connected" },
-    { "platform": "npm", "label": "npm", "url": "https://www.npmjs.com/~tamino-martinius", "status": "link", "note": "packages others build on" },
-    { "platform": "web", "label": "tamino.dev", "url": "https://tamino.dev", "status": "link" }
+    { "platform": "github", "label": "GitHub", "url": "https://github.com/tamino-martinius" },
+    { "platform": "npm", "label": "npm", "url": "https://www.npmjs.com/~tamino-martinius" },
+    { "platform": "codepen", "label": "CodePen", "url": "https://codepen.io/TaminoMartinius" },
+    { "platform": "twitter", "label": "X", "url": "https://x.com/TaminoMartinius" },
+    { "platform": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/tamino-martinius" },
+    { "platform": "web", "label": "tamino.dev", "url": "https://tamino.dev" }
   ]
 }
