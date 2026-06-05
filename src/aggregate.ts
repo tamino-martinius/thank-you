@@ -1,12 +1,11 @@
-// Aggregator: decrypt the full snapshot and distil it into the PUBLIC graph the
+// Aggregator: read the full snapshot and distil it into the PUBLIC graph the
 // website reads (data/public/graph.json). This is the only file the site needs.
 //
-//   ENCRYPTION_KEY=<64 hex>  npm run aggregate
+//   npm run aggregate    (reads data/snapshot.json from a prior `npm run collect`)
 
 import "./env.js"; // load .env before anything reads process.env
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import config from "../config.json" with { type: "json" };
-import { decrypt } from "./crypto.js";
 import type {
   GraphDependency,
   GraphLink,
@@ -18,11 +17,14 @@ import type {
   SourceId,
   Snapshot,
 } from "./types.js";
-import { log } from "./util.js";
+import { log, SNAPSHOT_PATH } from "./util.js";
 
 async function main() {
-  const enc = await readFile("data/snapshot.enc", "utf8");
-  const snapshot = JSON.parse(decrypt(enc)) as Snapshot;
+  const snapshot = JSON.parse(
+    await readFile(SNAPSHOT_PATH, "utf8").catch(() => {
+      throw new Error(`${SNAPSHOT_PATH} not found — run \`npm run collect\` first.`);
+    }),
+  ) as Snapshot;
 
   const { superFanThreshold, maxPeopleInGraph } = config.aggregate;
 

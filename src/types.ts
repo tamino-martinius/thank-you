@@ -2,7 +2,7 @@
 // Shared data contract for the "thank-you" project.
 //
 // Two artifacts flow through the pipeline:
-//   1. A FULL, encrypted snapshot  (data/snapshot.enc)  — every raw person + event.
+//   1. A FULL snapshot  (data/snapshot.json, gitignored) — every raw person + event.
 //   2. A PUBLIC, aggregated graph  (data/public/graph.json) — what the website reads.
 //
 // Everything here is PEOPLE-centric. We deliberately do not keep statistics that
@@ -14,7 +14,7 @@ export type SourceId = "github" | "codepen" | "twitter" | "linkedin";
 /** How a person touched my work. A follow targets *me*; the rest target a project. */
 export type InteractionKind = "star" | "fork" | "watch" | "follow" | "love" | "like";
 
-// ── FULL snapshot (encrypted) ────────────────────────────────────────────────
+// ── FULL snapshot (plain JSON, gitignored intermediate) ──────────────────────
 
 /** A single human, as seen on one platform. */
 export interface RawPerson {

@@ -23,28 +23,21 @@ You can have your own graph live in about five minutes — no server, no databas
 
 2. **Point it at you** — edit [`config.json`](config.json): set your `owner.name`, `owner.tagline`,
    `sources.github.username`, your `presence` links, and `repoUrl`. That's the only file you need
-   to touch.
+   to touch — and **no secrets are required**.
 
-3. **Add the encryption key** — generate one:
+3. **Turn on Pages** — **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-   ```bash
-   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-   ```
+4. **Run it** — **Actions → Sync & deploy → Run workflow**. It collects your data, publishes the
+   curated graph, and deploys.
 
-   Add it under **Settings → Secrets and variables → Actions → New repository secret** as
-   `ENCRYPTION_KEY`. *(Optional: also add `GH_PAT`, a classic token with no scopes, for a
-   5,000/hr API rate limit instead of 1,000.)*
-
-4. **Turn on Pages** — **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-
-5. **Run it** — **Actions → Sync & deploy → Run workflow**. It collects your data, encrypts the
-   full snapshot, publishes the curated graph, and deploys.
-
-6. **Done** — your page is live at `https://<your-username>.github.io/<repo>/`, and it refreshes
+5. **Done** — your page is live at `https://<your-username>.github.io/<repo>/`, and it refreshes
    itself **every night**.
 
-> No secrets? `npm run serve` still renders the committed sample graph — fork, run, and you'll see
-> *this* page before you've configured anything.
+> *(Optional)* Add a `GH_PAT` secret — a classic token with **no scopes** — for a 5,000/hr API
+> rate limit instead of the built-in token's ~1,000/hr. Handy if you have a lot of repos/stars.
+>
+> Haven't configured anything yet? `npm run serve` already renders the committed sample graph, so
+> a fresh fork shows *this* page before you touch a thing.
 
 ### Custom domain (optional)
 
@@ -64,34 +57,39 @@ Leave `cname` as `null` to stay on the default `github.io` URL.
 
 ## How it works
 
-Two artifacts flow through a nightly pipeline (the technique mirrors
-[`github-stats`](https://github.com/tamino-martinius/github-stats)):
+A nightly pipeline turns your accounts into one published file:
 
 ```
-                ┌──────────────┐   AES-256-GCM    ┌────────────────────┐
-  collectors ──▶│  collect.ts  │ ───────────────▶ │ data/snapshot.enc  │  (committed, encrypted)
-  (gh/cp/…)     └──────────────┘                  └────────────────────┘
-                                                            │ decrypt
+                ┌──────────────┐                 ┌─────────────────────┐
+  collectors ──▶│  collect.ts  │ ──────────────▶ │ data/snapshot.json  │  (gitignored, transient)
+  (gh/cp/…)     └──────────────┘                 └─────────────────────┘
+                                                            │ curate
                                                             ▼
                                                    ┌────────────────────┐
                                                    │   aggregate.ts     │
                                                    └────────────────────┘
-                                                            │ curate
+                                                            │
                                                             ▼
-                                            data/public/graph.json  +  site/data/graph.json
+                                            data/public/graph.json  +  site/data/graph.json  (committed)
                                                             │
                                                             ▼
                                                    the website (d3 on canvas)
 ```
 
-1. **`collect.ts`** runs every enabled collector, merges them into one people-centric `Snapshot`
-   (every raw person + interaction), and writes it **encrypted** to `data/snapshot.enc`. Only the
-   Action — which holds `ENCRYPTION_KEY` — can read or write it; the granular history stays private.
-2. **`aggregate.ts`** decrypts that snapshot and distils the **public** graph the site reads
+1. **`collect.ts`** runs every enabled collector and merges them into one people-centric `Snapshot`
+   (every raw person + interaction), written to `data/snapshot.json`. It's a **gitignored, transient
+   intermediate** — recreated from scratch on every run — so `aggregate` can re-curate (retune
+   thresholds, etc.) without re-hitting the APIs.
+2. **`aggregate.ts`** distils that snapshot into the **public** graph the site reads
    (`data/public/graph.json`): people ranked by interactions, projects with supporter counts, the
    links between them, and the reciprocal "people & work I lean on" set.
 3. **The site** (`site/`) is static — no build step — rendering the graph with
    [d3-force](https://d3js.org) on a `<canvas>`, plus a searchable wall of every supporter.
+
+> *(Heads-up for forkers coming from [`github-stats`](https://github.com/tamino-martinius/github-stats):
+> that project encrypts its snapshot to keep private-repo data and incremental history out of the
+> public file. This one collects only public data, fully, every night — and the published graph
+> already carries every identity — so there's nothing to encrypt. No key, no secret.)*
 
 ### What gets collected
 
@@ -146,8 +144,8 @@ Everything tweakable lives in [`config.json`](config.json):
 | `repoUrl` | the titlebar **GitHub ↗** link |
 | `cname` | custom domain (or `null`) |
 
-Change a threshold and re-run `npm run aggregate` — it re-curates from the existing snapshot
-without re-collecting.
+Change a threshold and re-run `npm run aggregate` — it re-curates from the existing
+`data/snapshot.json` without re-collecting.
 
 ---
 
@@ -155,21 +153,20 @@ without re-collecting.
 
 ```bash
 npm install
-cp .env.example .env     # then fill in ENCRYPTION_KEY (GH_PAT optional)
 
-npm run serve     # → http://localhost:4173  (renders the committed graph; no secrets needed)
-npm run sync      # collect + aggregate → refreshes the encrypted snapshot + graph.json
+npm run serve     # → http://localhost:4173  (renders the committed graph; nothing else needed)
+npm run sync      # collect + aggregate → refreshes data/snapshot.json + graph.json
 ```
 
-`.env` is loaded automatically by the data scripts (no `export` needed); `PORT` overrides the
-serve port.
+`collect` needs a GitHub token — it picks up your `gh` CLI login automatically, or set `GH_PAT`
+(in a gitignored `.env`, loaded automatically — see `.env.example`). `PORT` overrides the serve port.
 
 | Script | Does |
 | --- | --- |
-| `npm run collect` | fetch everything → `data/snapshot.enc` (needs `ENCRYPTION_KEY` + a GitHub token) |
-| `npm run aggregate` | decrypt → curate → `data/public/graph.json` + `site/data/graph.json` |
+| `npm run collect` | fetch everything → `data/snapshot.json` (needs a GitHub token) |
+| `npm run aggregate` | curate → `data/public/graph.json` + `site/data/graph.json` |
 | `npm run sync` | both, in order |
-| `npm run serve` | preview `site/` locally (no secrets) |
+| `npm run serve` | preview `site/` locally (no token) |
 
 ### Conductor
 
@@ -206,10 +203,10 @@ and run `npm run sync` — those people are thanked exactly like everyone else.
 
 ## Privacy & data
 
-Everything surfaced is already public on the source platforms. The encrypted snapshot keeps the
-*complete, granular* record (full follower lists, timestamps, every fork) private, while the site
-publishes only the curated, people-centric graph. Delete `data/snapshot.enc` and rotate
-`ENCRYPTION_KEY` to start fresh.
+Everything surfaced is already public on the source platforms (GitHub stargazers, followers, etc.).
+Only the curated `data/public/graph.json` is committed; the full intermediate `data/snapshot.json`
+is gitignored and regenerated each run. Nothing private is collected — `collect` reads only public
+endpoints (`/users/<you>/repos`, not your private repos), so there's no secret to manage.
 
 Built with [d3](https://d3js.org) · fonts: Fraunces, Hanken Grotesk, IBM Plex Mono.
 Made with gratitude. ✦

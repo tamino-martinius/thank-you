@@ -1,7 +1,11 @@
 // Orchestrator: run every enabled collector, merge into one people-centric
-// Snapshot, and write it encrypted to data/snapshot.enc.
+// Snapshot, and write it to data/snapshot.json — a plain, gitignored intermediate
+// that `aggregate.ts` then distils into the public graph. (Everything here is
+// already-public data and the public graph carries the same identities, so there's
+// nothing to encrypt; the snapshot just exists so you can re-aggregate — e.g. retune
+// thresholds — without re-fetching from the APIs.)
 //
-//   ENCRYPTION_KEY=<64 hex>  GH_PAT=<token>  npm run collect
+//   GH_PAT=<token>  npm run collect
 
 import "./env.js"; // load .env before anything reads process.env
 import { mkdir, writeFile } from "node:fs/promises";
@@ -9,12 +13,10 @@ import config from "../config.json" with { type: "json" };
 import { collectCodepen } from "./collectors/codepen.js";
 import { collectGithub } from "./collectors/github.js";
 import { collectImport } from "./collectors/imports.js";
-import { encrypt, hasKey } from "./crypto.js";
 import type { RawInteraction, RawPerson, RawProject, Snapshot } from "./types.js";
-import { hasGithubToken, log } from "./util.js";
+import { hasGithubToken, log, SNAPSHOT_PATH } from "./util.js";
 
 async function main() {
-  if (!hasKey()) throw new Error("ENCRYPTION_KEY required to write the encrypted snapshot.");
   if (config.sources.github.enabled && !hasGithubToken()) {
     throw new Error("Set GH_PAT (or GH_TOKEN) to collect GitHub data.");
   }
@@ -71,9 +73,9 @@ async function main() {
   };
 
   await mkdir("data", { recursive: true });
-  await writeFile("data/snapshot.enc", encrypt(JSON.stringify(snapshot)), "utf8");
+  await writeFile(SNAPSHOT_PATH, JSON.stringify(snapshot), "utf8");
   log(
-    `Wrote encrypted snapshot: ${snapshot.people.length} people, ` +
+    `Wrote snapshot: ${snapshot.people.length} people, ` +
       `${snapshot.projects.length} projects, ${snapshot.interactions.length} interactions.`,
   );
 }
