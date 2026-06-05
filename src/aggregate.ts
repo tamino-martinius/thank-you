@@ -215,11 +215,14 @@ async function main() {
     presence,
   };
 
+  // Indented + newline-delimited: gzip flattens the size difference on the wire,
+  // and it makes diffs (PRs and the nightly data commits) actually readable.
+  const json = JSON.stringify(graph, null, 2) + "\n";
   await mkdir("data/public", { recursive: true });
-  await writeFile("data/public/graph.json", JSON.stringify(graph, null, 0), "utf8");
+  await writeFile("data/public/graph.json", json, "utf8");
   // Mirror into the site so GitHub Pages serves it from one place.
   await mkdir("site/data", { recursive: true });
-  await writeFile("site/data/graph.json", JSON.stringify(graph), "utf8");
+  await writeFile("site/data/graph.json", json, "utf8");
 
   const direct = dependencies.filter((d) => d.degree === 1);
   const second = dependencies.filter((d) => d.degree === 2);
