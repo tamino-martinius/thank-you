@@ -102,7 +102,7 @@ flowchart TD
 
 | Source | What it reads | People I can thank |
 | --- | --- | --- |
-| **GitHub** | repos, stargazers (with timestamps), forkers, watchers, followers, contributors (bots excluded) | ✅ everyone |
+| **GitHub** | repos, stargazers (with timestamps), forkers, watchers, followers, contributors (bots + inherited template/fork authors excluded) | ✅ everyone |
 | **GitHub (deps)** | every repo's `package.json` → npm → the GitHub repo + maintainer | ✅ maintainers I rely on |
 
 ---
@@ -136,6 +136,7 @@ Everything tweakable lives in [`config.json`](config.json):
 | `owner.name`, `owner.tagline` | your name + the line under the title |
 | `sources.github.username` | the GitHub account to thank people from |
 | `sources.github.includeContributors` | also thank people who committed to your repos (bots excluded); default `true` |
+| `sources.github.contributorsSinceCreation` | only count contributors who committed *after* the repo was created — drops authors inherited from templates/forks; default `true` |
 | `sources.{codepen,twitter,linkedin}` | stubs — disabled by default; their *data* needs a manual export at `data/import/<source>.json` (`src/collectors/imports.ts`) |
 | `aggregate.superFanThreshold` | interactions needed to earn a face (default 2) |
 | `aggregate.gemMaxStars` | the "worth a star" star ceiling (default 1,000) |

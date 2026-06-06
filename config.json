@@ -9,8 +9,9 @@
     "github": {
       "enabled": true,
       "username": "tamino-martinius",
-      "includeForks": false,
+      "includeForks": true,
       "includeContributors": true,
+      "contributorsSinceCreation": true,
       "skipRepos": []
     },
     "codepen": {
