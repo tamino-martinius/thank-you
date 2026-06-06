@@ -36,6 +36,13 @@ interface GhRepo {
   owner: GhUser;
 }
 
+interface GhContributor extends GhUser {
+  /** Commit count attributed to this contributor on the default branch. */
+  contributions: number;
+  /** "User" | "Bot" — GitHub's bot flag. */
+  type?: string | null;
+}
+
 export interface GithubResult {
   me: RawPerson & { bio?: string | null };
   people: RawPerson[];
@@ -69,6 +76,7 @@ export async function collectGithub(
     username: string;
     includeForks?: boolean;
     skipRepos?: string[];
+    includeContributors?: boolean;
   },
   depCfg?: { includeTransitive?: boolean; transitiveLimit?: number },
 ): Promise<GithubResult> {
@@ -146,7 +154,24 @@ export async function collectGithub(
         const id = addPerson(w);
         interactions.push({ personId: id, projectId: pid, kind: "watch", source: "github", at: null });
       }
-      log(`GitHub:   ${repo.name} — ${repo.stargazers_count}★ ${repo.forks_count}⑂ ${watchers.length}👁`);
+      // Contributors (people with merged commits) — skip bots and myself.
+      let contributors: GhContributor[] = [];
+      if (cfg.includeContributors !== false) {
+        contributors = await ghPaginate<GhContributor>(`/repos/${username}/${repo.name}/contributors`);
+        for (const c of contributors) {
+          if (!c?.login || c.login === username || isBotContributor(c)) continue;
+          const id = addPerson(c);
+          interactions.push({
+            personId: id,
+            projectId: pid,
+            kind: "contribute",
+            source: "github",
+            at: null,
+            commits: c.contributions,
+          });
+        }
+      }
+      log(`GitHub:   ${repo.name} — ${repo.stargazers_count}★ ${repo.forks_count}⑂ ${watchers.length}👁 ${contributors.length}⎇`);
     } catch (err) {
       log(`GitHub:   ${repo.name} — skipped (${(err as Error).message})`);
     }
