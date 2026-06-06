@@ -7,8 +7,8 @@
    Only dependency: d3 (vendored locally).
    ════════════════════════════════════════════════════════════════════════ */
 
-const KIND_COLOR = { star: "#f0b94a", fork: "#5cb8a4", watch: "#b094df", follow: "#ec7d60", love: "#f0b94a", like: "#f0b94a" };
-const KIND_LABEL = { star: "starred", fork: "forked", watch: "watched", follow: "follows me", love: "loved", like: "liked" };
+const KIND_COLOR = { star: "#f0b94a", fork: "#5cb8a4", watch: "#b094df", follow: "#ec7d60", contribute: "#6ea8d8", love: "#f0b94a", like: "#f0b94a" };
+const KIND_LABEL = { star: "starred", fork: "forked", watch: "watched", follow: "follows me", contribute: "contributed", love: "loved", like: "liked" };
 const SUPER = 2; // score >= this == super-fan (kept in sync with config.aggregate.superFanThreshold)
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -23,16 +23,24 @@ const safeUrl = (u) => { try { const url = new URL(u, location.href); return /^h
 
 // Coloured activity tags (star / fork / watch / follow) — shared by the cloud
 // tooltip and the wall hover card so they read identically.
-const kindTagsHTML = (kinds) =>
+const kindTagsHTML = (kinds, commits) =>
   Object.entries(kinds || {})
-    .map(([k, v]) => `<span class="tt-tag k-${esc(k)}">${k === "follow" ? "follows me" : v + " " + esc(k) + (v > 1 ? "s" : "")}</span>`)
+    .map(([k, v]) => {
+      const text =
+        k === "follow"
+          ? "follows me"
+          : k === "contribute"
+            ? `${v} contribution${v > 1 ? "s" : ""}${commits ? ` · ${commits} commit${commits > 1 ? "s" : ""}` : ""}`
+            : `${v} ${esc(k)}${v > 1 ? "s" : ""}`;
+      return `<span class="tt-tag k-${esc(k)}">${text}</span>`;
+    })
     .join("");
 
 const personPopHTML = (p) =>
   `<span class="tt-head"><img src="${esc(avatar(p.avatar, 80))}" alt="" ${onImgError}/>` +
   `<span class="tt-id"><span class="tt-name">${esc(p.name || p.title || p.login)}</span>` +
   `<span class="tt-sub">@${esc(p.login)}</span></span></span>` +
-  `<span class="tt-tags">${kindTagsHTML(p.kinds)}</span>`;
+  `<span class="tt-tags">${kindTagsHTML(p.kinds, p.commits)}</span>`;
 
 // Only let real hex colours into inline styles; fall back to a neutral swatch.
 const hexColor = (c) => (/^#[0-9a-fA-F]{3,8}$/.test(c || "") ? c : "var(--muted)");
@@ -146,7 +154,7 @@ function buildGraph(g) {
   });
   const personNodes = g.people.map((p) => ({
     id: p.id, type: "person", login: p.login, title: p.name || p.login, url: p.url,
-    avatar: p.avatar, score: p.score, kinds: p.kinds, isFollower: p.isFollower,
+    avatar: p.avatar, score: p.score, kinds: p.kinds, commits: p.commits, isFollower: p.isFollower,
     super: p.score >= SUPER, r: p.score >= SUPER ? Math.min(26, 10 + p.score * 2.1) : 4,
   }));
 
