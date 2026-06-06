@@ -12,7 +12,7 @@
 export type SourceId = "github" | "codepen" | "twitter" | "linkedin";
 
 /** How a person touched my work. A follow targets *me*; the rest target a project. */
-export type InteractionKind = "star" | "fork" | "watch" | "follow" | "love" | "like";
+export type InteractionKind = "star" | "fork" | "watch" | "follow" | "love" | "like" | "contribute";
 
 // ── FULL snapshot (plain JSON, gitignored intermediate) ──────────────────────
 
@@ -62,6 +62,8 @@ export interface RawInteraction {
   kind: InteractionKind;
   source: SourceId;
   at?: string | null;
+  /** Commit count — set only on `contribute` interactions, for display. Never affects score. */
+  commits?: number;
 }
 
 /** A dependency I rely on — a maintainer I could thank with a star. */
@@ -142,6 +144,8 @@ export interface GraphPerson {
   firstSeen?: string | null;
   /** Follower count — set for accounts I follow (ranks the "lean on" list). */
   followers?: number;
+  /** Total commits across repos this person contributed to — display only, never scoring. */
+  commits?: number;
 }
 
 export interface GraphLink {
