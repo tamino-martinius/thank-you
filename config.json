@@ -10,6 +10,7 @@
       "enabled": true,
       "username": "tamino-martinius",
       "includeForks": false,
+      "includeContributors": true,
       "skipRepos": []
     },
     "codepen": {
