@@ -47,6 +47,11 @@ export interface GithubResult {
 const personId = (u: { id: number }) => `github:${u.id}`;
 const repoId = (r: { name: string }) => `gh:repo:${r.name}`;
 
+/** Bots we never thank — flagged by GitHub's `type: "Bot"` or the `[bot]` login suffix. */
+export function isBotContributor(c: { login: string; type?: string | null }): boolean {
+  return c.type === "Bot" || /\[bot\]$/i.test(c.login);
+}
+
 function toPerson(u: GhUser): RawPerson {
   return {
     id: personId(u),
