@@ -18,6 +18,7 @@
   --coral:     #ec7d60;   /* follows  */
   --teal:      #5cb8a4;   /* forks    */
   --violet:    #b094df;   /* watches  */
+  --blue:      #6ea8d8;   /* contributes */
   /* stars use --gold */
 
   --line:    rgba(245, 236, 218, 0.09);
@@ -168,6 +169,7 @@ section { padding: clamp(64px, 9vw, 130px) clamp(18px, 5vw, 56px); max-width: va
 .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
 .dot-star { background: var(--gold); } .dot-fork { background: var(--teal); }
 .dot-watch { background: var(--violet); } .dot-follow { background: var(--coral); }
+.dot-contribute { background: var(--blue); }
 
 .toggle {
   display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
@@ -222,6 +224,7 @@ section { padding: clamp(64px, 9vw, 130px) clamp(18px, 5vw, 56px); max-width: va
 }
 .tt-tag.k-star { color: var(--gold); } .tt-tag.k-fork { color: var(--teal); }
 .tt-tag.k-watch { color: var(--violet); } .tt-tag.k-follow { color: var(--coral); }
+.tt-tag.k-contribute { color: var(--blue); }
 .tt-langs { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 4px 12px; }
 .tt-archived {
   font-family: var(--mono); font-size: .56rem; text-transform: uppercase; letter-spacing: .1em;
