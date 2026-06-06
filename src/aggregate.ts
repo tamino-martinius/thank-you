@@ -50,6 +50,7 @@ async function main() {
       sources: Set<SourceId>;
       isFollower: boolean;
       firstSeen: string | null;
+      commits: number;
     }
   >();
 
@@ -63,7 +64,7 @@ async function main() {
 
     let agg = peopleAgg.get(person.id);
     if (!agg) {
-      agg = { person, score: 0, kinds: {}, sources: new Set(), isFollower: false, firstSeen: null };
+      agg = { person, score: 0, kinds: {}, sources: new Set(), isFollower: false, firstSeen: null, commits: 0 };
       peopleAgg.set(person.id, agg);
     }
     agg.score += 1;
@@ -71,6 +72,7 @@ async function main() {
     agg.sources.add(it.source);
     if (it.kind === "follow") agg.isFollower = true;
     if (it.at && (!agg.firstSeen || it.at < agg.firstSeen)) agg.firstSeen = it.at;
+    if (it.commits) agg.commits += it.commits;
 
     if (it.projectId !== "me") {
       if (!supportersByProject.has(it.projectId)) supportersByProject.set(it.projectId, new Set());
@@ -102,6 +104,7 @@ async function main() {
       kinds: a.kinds,
       isFollower: a.isFollower,
       firstSeen: a.firstSeen,
+      ...(a.commits > 0 ? { commits: a.commits } : {}),
     }));
 
   const keptIds = new Set(people.map((p) => p.id));
