@@ -102,7 +102,7 @@ flowchart TD
 
 | Source | What it reads | People I can thank |
 | --- | --- | --- |
-| **GitHub** | repos, stargazers (with timestamps), forkers, watchers, followers | ✅ everyone |
+| **GitHub** | repos, stargazers (with timestamps), forkers, watchers, followers, contributors (bots + inherited template/fork authors excluded) | ✅ everyone |
 | **GitHub (deps)** | every repo's `package.json` → npm → the GitHub repo + maintainer | ✅ maintainers I rely on |
 
 ---
@@ -114,10 +114,11 @@ recede into quiet discs.
 
 - **The cloud** — me at the center, **faces** are super-fans (people who showed up more than
   once), **dots** are everyone else (coral = follows me, warm = starred/forked). Lines are
-  coloured by gesture: ★ star · ⑂ fork · 👁 watch · ♥ follow. Drag the cloud, scroll to zoom, hover
+  coloured by gesture: ★ star · ⑂ fork · 👁 watch · ♥ follow · ⎇ contribute. Drag the cloud, scroll to zoom, hover
   anyone, filter by gesture, or isolate super-fans.
 - **The wall** names **everyone**, searchable, with the same hover card as the cloud. The **top
-  three amounts** wear gold / silver / bronze podium circles — ties share a circle.
+  three places** wear gold / silver / bronze podium circles — ties share a place (and the
+  ones below it, so two in first means no second).
 - **I'm grateful too** — the open source I depend on, as star candidates. **Worth a star** =
   still maintained (a push in the last `activeWithinMonths` months) and under `gemMaxStars` stars,
   spanning both my direct deps and their **second-grade** deps ("Two hops away"). It closes with
@@ -135,6 +136,8 @@ Everything tweakable lives in [`config.json`](config.json):
 | --- | --- |
 | `owner.name`, `owner.tagline` | your name + the line under the title |
 | `sources.github.username` | the GitHub account to thank people from |
+| `sources.github.includeContributors` | also thank people who committed to your repos (bots excluded); default `true` |
+| `sources.github.contributorsSinceCreation` | only count contributors who committed *after* the repo was created — drops authors inherited from templates/forks; default `true` |
 | `sources.{codepen,twitter,linkedin}` | stubs — disabled by default; their *data* needs a manual export at `data/import/<source>.json` (`src/collectors/imports.ts`) |
 | `aggregate.superFanThreshold` | interactions needed to earn a face (default 2) |
 | `aggregate.gemMaxStars` | the "worth a star" star ceiling (default 1,000) |
@@ -169,6 +172,8 @@ npm run sync      # collect + aggregate → refreshes data/snapshot.json + graph
 | `npm run aggregate` | curate → `data/public/graph.json` + `site/data/graph.json` |
 | `npm run sync` | both, in order |
 | `npm run serve` | preview `site/` locally (no token) |
+| `npm run lint` | [Biome](https://biomejs.dev) lint (config in `biome.json`) |
+| `npm run check` | lint + type-check + unit test (what CI runs; no token) |
 
 ### Conductor
 

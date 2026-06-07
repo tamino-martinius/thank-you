@@ -20,7 +20,7 @@ const MIME: Record<string, string> = {
 createServer(async (req, res) => {
   try {
     const url = decodeURIComponent((req.url || "/").split("?")[0]);
-    let path = normalize(join(ROOT, url === "/" ? "/index.html" : url));
+    const path = normalize(join(ROOT, url === "/" ? "/index.html" : url));
     if (!path.startsWith(ROOT)) {
       res.writeHead(403).end("Forbidden");
       return;

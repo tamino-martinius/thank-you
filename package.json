@@ -8,12 +8,17 @@
     "collect": "tsx src/collect.ts",
     "aggregate": "tsx src/aggregate.ts",
     "sync": "tsx src/collect.ts && tsx src/aggregate.ts",
-    "serve": "tsx scripts/serve.ts"
+    "serve": "tsx scripts/serve.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint .",
+    "test": "tsx src/collectors/github.contributors.test.ts",
+    "check": "npm run lint && npm run typecheck && npm run test"
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.16",
     "@types/node": "^22.19.19",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"

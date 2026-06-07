@@ -1,0 +1,28 @@
+# Validate the code on every push and pull request: Biome lint, strict type-check,
+# and the unit test. Pure static analysis — it never hits the GitHub API, so no
+# token or secrets are needed.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint, type-check & test
+        run: npm run check

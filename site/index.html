@@ -4,21 +4,21 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Thank you — an open letter of gratitude</title>
-<meta name="description" content="A thank-you to everyone who starred, forked, watched and followed my work — a cloud of the people behind the numbers." />
+<meta name="description" content="A thank-you to everyone who starred, forked, watched, followed and contributed to my work — a cloud of the people behind the numbers." />
 <!-- The SITE-URL token below is replaced with the absolute site URL at deploy time (see the workflows). -->
 <link rel="canonical" href="__SITE_URL__/" />
 
 <meta property="og:type" content="website" />
 <meta property="og:url" content="__SITE_URL__/" />
 <meta property="og:title" content="Thank you — an open letter of gratitude" />
-<meta property="og:description" content="To everyone who starred, forked, watched and followed my work — a cloud of the people behind the numbers. This is for you." />
+<meta property="og:description" content="To everyone who starred, forked, watched, followed and contributed to my work — a cloud of the people behind the numbers. This is for you." />
 <meta property="og:image" content="__SITE_URL__/assets/preview.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Thank you — an open letter of gratitude" />
-<meta name="twitter:description" content="To everyone who starred, forked, watched and followed my work — a cloud of the people behind the numbers." />
+<meta name="twitter:description" content="To everyone who starred, forked, watched, followed and contributed to my work — a cloud of the people behind the numbers." />
 <meta name="twitter:image" content="__SITE_URL__/assets/preview.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -52,7 +52,7 @@
     </h1>
     <p class="lead reveal" style="--d:3">
       To the <b class="count" id="c-supporters">…</b> people who starred, forked,
-      watched and followed along — for the
+      watched, followed and contributed — for the
       <b class="count" id="c-interactions">…</b> small gestures of support across
       <b class="count" id="c-projects">…</b> projects. Every face in the cloud below is
       one of you.
@@ -74,17 +74,18 @@
     <div class="stage">
       <div class="controls" id="controls">
         <div class="filter-group" role="group" aria-label="Filter by gesture">
-          <button class="filter is-active" data-kind="all" aria-pressed="true">Everything</button>
-          <button class="filter" data-kind="star" aria-pressed="false"><i class="dot dot-star"></i> Stars</button>
-          <button class="filter" data-kind="fork" aria-pressed="false"><i class="dot dot-fork"></i> Forks</button>
-          <button class="filter" data-kind="watch" aria-pressed="false"><i class="dot dot-watch"></i> Watches</button>
-          <button class="filter" data-kind="follow" aria-pressed="false"><i class="dot dot-follow"></i> Follows</button>
+          <button type="button" class="filter is-active" data-kind="all" aria-pressed="true">Everything</button>
+          <button type="button" class="filter" data-kind="star" aria-pressed="false"><i class="dot dot-star"></i> Stars</button>
+          <button type="button" class="filter" data-kind="fork" aria-pressed="false"><i class="dot dot-fork"></i> Forks</button>
+          <button type="button" class="filter" data-kind="watch" aria-pressed="false"><i class="dot dot-watch"></i> Watches</button>
+          <button type="button" class="filter" data-kind="follow" aria-pressed="false"><i class="dot dot-follow"></i> Follows</button>
+          <button type="button" class="filter" data-kind="contribute" aria-pressed="false"><i class="dot dot-contribute"></i> Contributions</button>
         </div>
         <label class="toggle">
           <input type="checkbox" id="superfans-only" />
           <span>Super-fans only</span>
         </label>
-        <button class="reset" id="reset-view" title="Reset view">Recenter</button>
+        <button type="button" class="reset" id="reset-view" title="Reset view">Recenter</button>
       </div>
 
       <canvas id="graph" role="img"
@@ -114,7 +115,7 @@
       <span class="wall-count" id="wall-count"></span>
     </div>
     <div class="wall-grid" id="wall-grid"></div>
-    <button class="show-more" id="wall-more" hidden>Show everyone</button>
+    <button type="button" class="show-more" id="wall-more" hidden>Show everyone</button>
   </section>
 
   <!-- ── Reciprocal: the shoulders I stand on ──────────────────────────── -->
@@ -126,19 +127,19 @@
     </div>
 
     <div class="dep-tabs" id="dep-tabs" role="group" aria-label="Which dependencies to show">
-      <button class="dep-tab is-active" data-mode="worth" aria-pressed="true">Worth a star</button>
-      <button class="dep-tab" data-mode="used" aria-pressed="false">Most relied upon</button>
-      <button class="dep-tab" data-mode="second" aria-pressed="false" hidden>Two hops away</button>
+      <button type="button" class="dep-tab is-active" data-mode="worth" aria-pressed="true">Worth a star</button>
+      <button type="button" class="dep-tab" data-mode="used" aria-pressed="false">Most relied upon</button>
+      <button type="button" class="dep-tab" data-mode="second" aria-pressed="false" hidden>Two hops away</button>
       <span class="dep-meta" id="dep-meta"></span>
     </div>
     <p class="dep-note" id="dep-note"></p>
     <div class="dep-grid" id="dep-grid"></div>
-    <button class="show-more" id="dep-more" hidden></button>
+    <button type="button" class="show-more" id="dep-more" hidden></button>
 
     <div class="recip-also">
       <h3>And the people &amp; work I lean on</h3>
       <div class="recip-people" id="recip-mine"></div>
-      <button class="show-more" id="mine-more" hidden></button>
+      <button type="button" class="show-more" id="mine-more" hidden></button>
     </div>
   </section>
 
@@ -158,7 +159,7 @@
       <p>And to close — where all that support went. The projects you carried.</p>
     </div>
     <ol class="landed-list" id="landed-list"></ol>
-    <button class="show-more" id="landed-archived" hidden></button>
+    <button type="button" class="show-more" id="landed-archived" hidden></button>
   </section>
 </main>
 

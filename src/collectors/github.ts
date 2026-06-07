@@ -36,6 +36,13 @@ interface GhRepo {
   owner: GhUser;
 }
 
+interface GhContributor extends GhUser {
+  /** Commit count attributed to this contributor on the default branch. */
+  contributions: number;
+  /** "User" | "Bot" — GitHub's bot flag. */
+  type?: string | null;
+}
+
 export interface GithubResult {
   me: RawPerson & { bio?: string | null };
   people: RawPerson[];
@@ -46,6 +53,11 @@ export interface GithubResult {
 
 const personId = (u: { id: number }) => `github:${u.id}`;
 const repoId = (r: { name: string }) => `gh:repo:${r.name}`;
+
+/** Bots we never thank — flagged by GitHub's `type: "Bot"` or the `[bot]` login suffix. */
+export function isBotContributor(c: { login: string; type?: string | null }): boolean {
+  return c.type === "Bot" || /\[bot\]$/i.test(c.login);
+}
 
 function toPerson(u: GhUser): RawPerson {
   return {
@@ -64,6 +76,8 @@ export async function collectGithub(
     username: string;
     includeForks?: boolean;
     skipRepos?: string[];
+    includeContributors?: boolean;
+    contributorsSinceCreation?: boolean;
   },
   depCfg?: { includeTransitive?: boolean; transitiveLimit?: number },
 ): Promise<GithubResult> {
@@ -141,7 +155,40 @@ export async function collectGithub(
         const id = addPerson(w);
         interactions.push({ personId: id, projectId: pid, kind: "watch", source: "github", at: null });
       }
-      log(`GitHub:   ${repo.name} — ${repo.stargazers_count}★ ${repo.forks_count}⑂ ${watchers.length}👁`);
+      // Contributors (people with merged commits) — skip bots and myself, and
+      // skip authors carried in via inherited git history (templates, forks):
+      // anyone whose commits all predate the repo's creation isn't *my* contributor.
+      let contributorCount = 0;
+      if (cfg.includeContributors !== false) {
+        const contributors = await ghPaginate<GhContributor>(`/repos/${username}/${repo.name}/contributors`);
+
+        // The set of logins that committed *since the repo was created*. Authors
+        // missing from it only exist in inherited history → not real contributors.
+        // (One extra sweep, cheap on forks since few commits post-date the fork.)
+        let activeSince: Set<string> | null = null;
+        if (contributors.length > 0 && cfg.contributorsSinceCreation !== false && repo.created_at) {
+          const recent = await ghPaginate<{ author: GhUser | null }>(
+            `/repos/${username}/${repo.name}/commits?since=${encodeURIComponent(repo.created_at)}`,
+          );
+          activeSince = new Set(recent.map((r) => r.author?.login).filter((l): l is string => !!l));
+        }
+
+        for (const c of contributors) {
+          if (!c?.login || c.login === username || isBotContributor(c)) continue;
+          if (activeSince && !activeSince.has(c.login)) continue; // inherited/template/upstream author
+          const id = addPerson(c);
+          interactions.push({
+            personId: id,
+            projectId: pid,
+            kind: "contribute",
+            source: "github",
+            at: null,
+            commits: c.contributions,
+          });
+          contributorCount += 1;
+        }
+      }
+      log(`GitHub:   ${repo.name} — ${repo.stargazers_count}★ ${repo.forks_count}⑂ ${watchers.length}👁 ${contributorCount}⎇`);
     } catch (err) {
       log(`GitHub:   ${repo.name} — skipped (${(err as Error).message})`);
     }

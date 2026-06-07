@@ -7,8 +7,7 @@
    Only dependency: d3 (vendored locally).
    ════════════════════════════════════════════════════════════════════════ */
 
-const KIND_COLOR = { star: "#f0b94a", fork: "#5cb8a4", watch: "#b094df", follow: "#ec7d60", love: "#f0b94a", like: "#f0b94a" };
-const KIND_LABEL = { star: "starred", fork: "forked", watch: "watched", follow: "follows me", love: "loved", like: "liked" };
+const KIND_COLOR = { star: "#f0b94a", fork: "#5cb8a4", watch: "#b094df", follow: "#ec7d60", contribute: "#6ea8d8", love: "#f0b94a", like: "#f0b94a" };
 const SUPER = 2; // score >= this == super-fan (kept in sync with config.aggregate.superFanThreshold)
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -16,23 +15,31 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 // Swap a broken avatar for a neutral placeholder instead of the browser's broken-image icon.
 const AVATAR_FALLBACK = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Crect width='8' height='8' fill='%23241a10'/%3E%3C/svg%3E";
 const onImgError = `onerror="this.onerror=null;this.src='${AVATAR_FALLBACK}'"`;
-const avatar = (url, size = 120) => (url ? safeUrl(url + (url.includes("?") ? "&" : "?") + "s=" + size) : "");
+const avatar = (url, size = 120) => (url ? safeUrl(`${url + (url.includes("?") ? "&" : "?")}s=${size}`) : "");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 // Only allow http(s) URLs through to href/src — neutralises javascript:/data: from external data.
 const safeUrl = (u) => { try { const url = new URL(u, location.href); return /^https?:$/.test(url.protocol) ? url.href : "#"; } catch { return "#"; } };
 
 // Coloured activity tags (star / fork / watch / follow) — shared by the cloud
 // tooltip and the wall hover card so they read identically.
-const kindTagsHTML = (kinds) =>
+const kindTagsHTML = (kinds, commits) =>
   Object.entries(kinds || {})
-    .map(([k, v]) => `<span class="tt-tag k-${esc(k)}">${k === "follow" ? "follows me" : v + " " + esc(k) + (v > 1 ? "s" : "")}</span>`)
+    .map(([k, v]) => {
+      const text =
+        k === "follow"
+          ? "follows me"
+          : k === "contribute"
+            ? `${v} contribution${v > 1 ? "s" : ""}${commits ? ` · ${commits} commit${commits > 1 ? "s" : ""}` : ""}`
+            : `${v} ${esc(k)}${v > 1 ? "s" : ""}`;
+      return `<span class="tt-tag k-${esc(k)}">${text}</span>`;
+    })
     .join("");
 
 const personPopHTML = (p) =>
   `<span class="tt-head"><img src="${esc(avatar(p.avatar, 80))}" alt="" ${onImgError}/>` +
   `<span class="tt-id"><span class="tt-name">${esc(p.name || p.title || p.login)}</span>` +
   `<span class="tt-sub">@${esc(p.login)}</span></span></span>` +
-  `<span class="tt-tags">${kindTagsHTML(p.kinds)}</span>`;
+  `<span class="tt-tags">${kindTagsHTML(p.kinds, p.commits)}</span>`;
 
 // Only let real hex colours into inline styles; fall back to a neutral swatch.
 const hexColor = (c) => (/^#[0-9a-fA-F]{3,8}$/.test(c || "") ? c : "var(--muted)");
@@ -52,7 +59,7 @@ async function boot() {
       if (!r.ok) throw new Error(r.status);
       return r.json();
     });
-  } catch (e) {
+  } catch {
     const el = $("#stage-loading");
     if (el) el.textContent = "Couldn't load the gratitude right now — please try again shortly.";
     return;
@@ -81,7 +88,7 @@ function hydrateChrome(g) {
     )
     .join("");
   const d = new Date(g.generatedAt);
-  $("#updated").textContent = "updated " + d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  $("#updated").textContent = `updated ${d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
 
   $("#foot-links").innerHTML =
     `<a href="${esc(safeUrl(g.me.url))}" target="_blank" rel="noopener">@${esc(g.me.login)}</a>` +
@@ -89,7 +96,7 @@ function hydrateChrome(g) {
     `<span class="sep">·</span><a href="data/graph.json" target="_blank" rel="noopener">the public data</a>` +
     `<span class="sep">·</span><a href="https://d3js.org" target="_blank" rel="noopener">built with d3</a>` +
     (g.repoUrl
-      ? `<span class="sep">·</span><a href="${esc(safeUrl(g.repoUrl + "/issues/new?title=" + encodeURIComponent("Please remove me")))}" target="_blank" rel="noopener">prefer not to be here?</a>`
+      ? `<span class="sep">·</span><a href="${esc(safeUrl(`${g.repoUrl}/issues/new?title=${encodeURIComponent("Please remove me")}`))}" target="_blank" rel="noopener">prefer not to be here?</a>`
       : "");
 }
 
@@ -115,7 +122,7 @@ function animateNumber(el, to) {
   const dur = 1400, t0 = performance.now();
   const tick = (now) => {
     const p = Math.min(1, (now - t0) / dur);
-    const eased = 1 - Math.pow(1 - p, 3);
+    const eased = 1 - (1 - p) ** 3;
     el.textContent = Math.round(to * eased).toLocaleString("en-US");
     if (p < 1) requestAnimationFrame(tick);
   };
@@ -146,7 +153,7 @@ function buildGraph(g) {
   });
   const personNodes = g.people.map((p) => ({
     id: p.id, type: "person", login: p.login, title: p.name || p.login, url: p.url,
-    avatar: p.avatar, score: p.score, kinds: p.kinds, isFollower: p.isFollower,
+    avatar: p.avatar, score: p.score, kinds: p.kinds, commits: p.commits, isFollower: p.isFollower,
     super: p.score >= SUPER, r: p.score >= SUPER ? Math.min(26, 10 + p.score * 2.1) : 4,
   }));
 
@@ -299,7 +306,7 @@ function buildGraph(g) {
     }
     ctx.save();
     ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 6.2832); ctx.closePath(); ctx.clip();
-    if (im && im._ready) ctx.drawImage(im, n.x - n.r, n.y - n.r, n.r * 2, n.r * 2);
+    if (im?._ready) ctx.drawImage(im, n.x - n.r, n.y - n.r, n.r * 2, n.r * 2);
     else { ctx.fillStyle = n.super ? "#3a2c16" : "#2a2014"; ctx.fill(); }
     ctx.restore();
     ctx.lineWidth = (isMe ? 1.6 : n.super ? 2.4 : 1.2) / transform.k;
@@ -328,7 +335,7 @@ function buildGraph(g) {
   canvas.addEventListener("mouseleave", () => { hover = null; tooltipEl.hidden = true; scheduleRender(); });
   canvas.addEventListener("click", (event) => {
     const n = pick(event);
-    if (n && n.url) window.open(safeUrl(n.url), "_blank", "noopener");
+    if (n?.url) window.open(safeUrl(n.url), "_blank", "noopener");
   });
 
   function showTooltip(n, event) {
@@ -348,8 +355,8 @@ function buildGraph(g) {
     }
     tooltipEl.innerHTML = html;
     tooltipEl.hidden = false;
-    tooltipEl.style.left = mx + "px";
-    tooltipEl.style.top = my + "px";
+    tooltipEl.style.left = `${mx}px`;
+    tooltipEl.style.top = `${my}px`;
     void rect;
   }
 
@@ -405,15 +412,20 @@ function buildWall(g) {
   const people = [...g.people].sort((a, b) => b.score - a.score || (a.login || "").localeCompare(b.login || ""));
   const STEP = 240;
 
-  // Podium: the top three *amounts* get special circles. Everyone tied at an
-  // amount shares that amount's circle (so a tie for 2nd → both get the 2nd ring).
-  const topAmounts = [...new Set(people.map((p) => p.score))].sort((a, b) => b - a).slice(0, 3);
-  const rankOf = (score) => topAmounts.indexOf(score) + 1; // 1|2|3, or 0 when outside the top three
+  // Podium: standard competition ranking by score — 1st/2nd/3rd *place* take gold/
+  // silver/bronze. A tie shares a place AND consumes the ones below it: two in 1st
+  // both get gold and the next is 3rd, no silver (8,8,6,5 → gold,gold,bronze,none);
+  // two in 3rd both get bronze (8,7,6,6 → gold,silver,bronze,bronze). 4th onward: none.
+  // `people` is already sorted by score desc, so a score's first index is how many
+  // rank strictly above it → its place is that index + 1.
+  const placeOf = new Map();
+  people.forEach((p, i) => { if (!placeOf.has(p.score)) placeOf.set(p.score, i + 1); });
+  const rankOf = (score) => { const place = placeOf.get(score) ?? Infinity; return place <= 3 ? place : 0; };
 
   // Same hover card as the cloud: avatar, name, @handle, coloured activity tags.
   const card = (p) => {
     const rank = rankOf(p.score);
-    return `<a class="face ${p.score >= SUPER ? "super" : ""}${rank ? ` rank-${rank}` : ""}" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener" data-name="${esc((p.name || "") + " " + p.login).toLowerCase()}">
+    return `<a class="face ${p.score >= SUPER ? "super" : ""}${rank ? ` rank-${rank}` : ""}" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener" data-name="${esc(`${p.name || ""} ${p.login}`).toLowerCase()}">
        <img loading="lazy" src="${esc(avatar(p.avatar, 120))}" alt="${esc(p.name || p.login)}" ${onImgError}/>
        ${rank ? `<span class="rank-crown">${rank === 1 ? "★" : rank}</span>` : ""}
        ${p.score >= SUPER ? `<span class="score-badge">${p.score}</span>` : ""}
@@ -495,7 +507,7 @@ function buildLanded(g) {
    I'm grateful too — the shoulders I stand on
    ════════════════════════════════════════════════════════════════════════ */
 const fmtStars = (n) =>
-  n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k" : String(n);
+  n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "")}k` : String(n);
 
 const DEP_CAP = 18;
 

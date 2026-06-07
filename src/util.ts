@@ -63,6 +63,7 @@ export async function ghPaginate<T = any>(path: string, opts: GhOptions = {}): P
   while (url) {
     const res = await ghGet(url, opts);
     if (res.status === 404) break;
+    if (res.status === 204) break; // No Content — e.g. an empty repo's contributors list
     if (!res.ok) {
       const body = await res.text();
       throw new Error(`GitHub ${res.status} for ${url}: ${body.slice(0, 200)}`);
