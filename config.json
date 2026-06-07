@@ -34,7 +34,7 @@
     "maxPeopleInGraph": 1200,
     "gemMaxStars": 1000,
     "activeWithinMonths": 12,
-    "excludePeople": []
+    "excludePeople": ["tamino-cookieai"]
   },
   "dependencies": {
     "includeTransitive": true,
