@@ -117,7 +117,8 @@ recede into quiet discs.
   coloured by gesture: ★ star · ⑂ fork · 👁 watch · ♥ follow · ⎇ contribute. Drag the cloud, scroll to zoom, hover
   anyone, filter by gesture, or isolate super-fans.
 - **The wall** names **everyone**, searchable, with the same hover card as the cloud. The **top
-  three amounts** wear gold / silver / bronze podium circles — ties share a circle.
+  three places** wear gold / silver / bronze podium circles — ties share a place (and the
+  ones below it, so two in first means no second).
 - **I'm grateful too** — the open source I depend on, as star candidates. **Worth a star** =
   still maintained (a push in the last `activeWithinMonths` months) and under `gemMaxStars` stars,
   spanning both my direct deps and their **second-grade** deps ("Two hops away"). It closes with

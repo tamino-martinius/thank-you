@@ -413,10 +413,15 @@ function buildWall(g) {
   const people = [...g.people].sort((a, b) => b.score - a.score || (a.login || "").localeCompare(b.login || ""));
   const STEP = 240;
 
-  // Podium: the top three *amounts* get special circles. Everyone tied at an
-  // amount shares that amount's circle (so a tie for 2nd → both get the 2nd ring).
-  const topAmounts = [...new Set(people.map((p) => p.score))].sort((a, b) => b - a).slice(0, 3);
-  const rankOf = (score) => topAmounts.indexOf(score) + 1; // 1|2|3, or 0 when outside the top three
+  // Podium: standard competition ranking by score — 1st/2nd/3rd *place* take gold/
+  // silver/bronze. A tie shares a place AND consumes the ones below it: two in 1st
+  // both get gold and the next is 3rd, no silver (8,8,6,5 → gold,gold,bronze,none);
+  // two in 3rd both get bronze (8,7,6,6 → gold,silver,bronze,bronze). 4th onward: none.
+  // `people` is already sorted by score desc, so a score's first index is how many
+  // rank strictly above it → its place is that index + 1.
+  const placeOf = new Map();
+  people.forEach((p, i) => { if (!placeOf.has(p.score)) placeOf.set(p.score, i + 1); });
+  const rankOf = (score) => { const place = placeOf.get(score) ?? Infinity; return place <= 3 ? place : 0; };
 
   // Same hover card as the cloud: avatar, name, @handle, coloured activity tags.
   const card = (p) => {
