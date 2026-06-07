@@ -172,7 +172,8 @@ npm run sync      # collect + aggregate → refreshes data/snapshot.json + graph
 | `npm run aggregate` | curate → `data/public/graph.json` + `site/data/graph.json` |
 | `npm run sync` | both, in order |
 | `npm run serve` | preview `site/` locally (no token) |
-| `npm run check` | type-check + unit test + site syntax check (what CI runs; no token) |
+| `npm run lint` | [Biome](https://biomejs.dev) lint (config in `biome.json`) |
+| `npm run check` | lint + type-check + unit test (what CI runs; no token) |
 
 ### Conductor
 

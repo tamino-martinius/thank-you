@@ -89,7 +89,7 @@ async function main() {
   }
 
   // Rank people by engagement; keep the most-engaged within the cap.
-  let people: GraphPerson[] = [...peopleAgg.values()]
+  const people: GraphPerson[] = [...peopleAgg.values()]
     .sort((a, b) => b.score - a.score)
     .slice(0, maxPeopleInGraph)
     .map((a) => ({
@@ -236,7 +236,7 @@ async function main() {
 
   // Indented + newline-delimited: gzip flattens the size difference on the wire,
   // and it makes diffs (PRs and the nightly data commits) actually readable.
-  const json = JSON.stringify(graph, null, 2) + "\n";
+  const json = `${JSON.stringify(graph, null, 2)}\n`;
   await mkdir("data/public", { recursive: true });
   await writeFile("data/public/graph.json", json, "utf8");
   // Mirror into the site so GitHub Pages serves it from one place.

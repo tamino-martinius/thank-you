@@ -1,6 +1,6 @@
-# Validate the code on every push and pull request: strict type-check, the unit
-# test, and a syntax check of the zero-build site script. Pure static analysis —
-# it never hits the GitHub API, so no token or secrets are needed.
+# Validate the code on every push and pull request: Biome lint, strict type-check,
+# and the unit test. Pure static analysis — it never hits the GitHub API, so no
+# token or secrets are needed.
 name: CI
 
 on:
@@ -24,5 +24,5 @@ jobs:
 
       - run: npm ci
 
-      - name: Type-check, test & lint the site script
+      - name: Lint, type-check & test
         run: npm run check

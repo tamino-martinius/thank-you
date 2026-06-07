@@ -74,18 +74,18 @@
     <div class="stage">
       <div class="controls" id="controls">
         <div class="filter-group" role="group" aria-label="Filter by gesture">
-          <button class="filter is-active" data-kind="all" aria-pressed="true">Everything</button>
-          <button class="filter" data-kind="star" aria-pressed="false"><i class="dot dot-star"></i> Stars</button>
-          <button class="filter" data-kind="fork" aria-pressed="false"><i class="dot dot-fork"></i> Forks</button>
-          <button class="filter" data-kind="watch" aria-pressed="false"><i class="dot dot-watch"></i> Watches</button>
-          <button class="filter" data-kind="follow" aria-pressed="false"><i class="dot dot-follow"></i> Follows</button>
-          <button class="filter" data-kind="contribute" aria-pressed="false"><i class="dot dot-contribute"></i> Contributions</button>
+          <button type="button" class="filter is-active" data-kind="all" aria-pressed="true">Everything</button>
+          <button type="button" class="filter" data-kind="star" aria-pressed="false"><i class="dot dot-star"></i> Stars</button>
+          <button type="button" class="filter" data-kind="fork" aria-pressed="false"><i class="dot dot-fork"></i> Forks</button>
+          <button type="button" class="filter" data-kind="watch" aria-pressed="false"><i class="dot dot-watch"></i> Watches</button>
+          <button type="button" class="filter" data-kind="follow" aria-pressed="false"><i class="dot dot-follow"></i> Follows</button>
+          <button type="button" class="filter" data-kind="contribute" aria-pressed="false"><i class="dot dot-contribute"></i> Contributions</button>
         </div>
         <label class="toggle">
           <input type="checkbox" id="superfans-only" />
           <span>Super-fans only</span>
         </label>
-        <button class="reset" id="reset-view" title="Reset view">Recenter</button>
+        <button type="button" class="reset" id="reset-view" title="Reset view">Recenter</button>
       </div>
 
       <canvas id="graph" role="img"
@@ -115,7 +115,7 @@
       <span class="wall-count" id="wall-count"></span>
     </div>
     <div class="wall-grid" id="wall-grid"></div>
-    <button class="show-more" id="wall-more" hidden>Show everyone</button>
+    <button type="button" class="show-more" id="wall-more" hidden>Show everyone</button>
   </section>
 
   <!-- ── Reciprocal: the shoulders I stand on ──────────────────────────── -->
@@ -127,19 +127,19 @@
     </div>
 
     <div class="dep-tabs" id="dep-tabs" role="group" aria-label="Which dependencies to show">
-      <button class="dep-tab is-active" data-mode="worth" aria-pressed="true">Worth a star</button>
-      <button class="dep-tab" data-mode="used" aria-pressed="false">Most relied upon</button>
-      <button class="dep-tab" data-mode="second" aria-pressed="false" hidden>Two hops away</button>
+      <button type="button" class="dep-tab is-active" data-mode="worth" aria-pressed="true">Worth a star</button>
+      <button type="button" class="dep-tab" data-mode="used" aria-pressed="false">Most relied upon</button>
+      <button type="button" class="dep-tab" data-mode="second" aria-pressed="false" hidden>Two hops away</button>
       <span class="dep-meta" id="dep-meta"></span>
     </div>
     <p class="dep-note" id="dep-note"></p>
     <div class="dep-grid" id="dep-grid"></div>
-    <button class="show-more" id="dep-more" hidden></button>
+    <button type="button" class="show-more" id="dep-more" hidden></button>
 
     <div class="recip-also">
       <h3>And the people &amp; work I lean on</h3>
       <div class="recip-people" id="recip-mine"></div>
-      <button class="show-more" id="mine-more" hidden></button>
+      <button type="button" class="show-more" id="mine-more" hidden></button>
     </div>
   </section>
 
@@ -159,7 +159,7 @@
       <p>And to close — where all that support went. The projects you carried.</p>
     </div>
     <ol class="landed-list" id="landed-list"></ol>
-    <button class="show-more" id="landed-archived" hidden></button>
+    <button type="button" class="show-more" id="landed-archived" hidden></button>
   </section>
 </main>
 

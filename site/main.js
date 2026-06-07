@@ -8,7 +8,6 @@
    ════════════════════════════════════════════════════════════════════════ */
 
 const KIND_COLOR = { star: "#f0b94a", fork: "#5cb8a4", watch: "#b094df", follow: "#ec7d60", contribute: "#6ea8d8", love: "#f0b94a", like: "#f0b94a" };
-const KIND_LABEL = { star: "starred", fork: "forked", watch: "watched", follow: "follows me", contribute: "contributed", love: "loved", like: "liked" };
 const SUPER = 2; // score >= this == super-fan (kept in sync with config.aggregate.superFanThreshold)
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -16,7 +15,7 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 // Swap a broken avatar for a neutral placeholder instead of the browser's broken-image icon.
 const AVATAR_FALLBACK = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Crect width='8' height='8' fill='%23241a10'/%3E%3C/svg%3E";
 const onImgError = `onerror="this.onerror=null;this.src='${AVATAR_FALLBACK}'"`;
-const avatar = (url, size = 120) => (url ? safeUrl(url + (url.includes("?") ? "&" : "?") + "s=" + size) : "");
+const avatar = (url, size = 120) => (url ? safeUrl(`${url + (url.includes("?") ? "&" : "?")}s=${size}`) : "");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 // Only allow http(s) URLs through to href/src — neutralises javascript:/data: from external data.
 const safeUrl = (u) => { try { const url = new URL(u, location.href); return /^https?:$/.test(url.protocol) ? url.href : "#"; } catch { return "#"; } };
@@ -60,7 +59,7 @@ async function boot() {
       if (!r.ok) throw new Error(r.status);
       return r.json();
     });
-  } catch (e) {
+  } catch {
     const el = $("#stage-loading");
     if (el) el.textContent = "Couldn't load the gratitude right now — please try again shortly.";
     return;
@@ -89,7 +88,7 @@ function hydrateChrome(g) {
     )
     .join("");
   const d = new Date(g.generatedAt);
-  $("#updated").textContent = "updated " + d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  $("#updated").textContent = `updated ${d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
 
   $("#foot-links").innerHTML =
     `<a href="${esc(safeUrl(g.me.url))}" target="_blank" rel="noopener">@${esc(g.me.login)}</a>` +
@@ -97,7 +96,7 @@ function hydrateChrome(g) {
     `<span class="sep">·</span><a href="data/graph.json" target="_blank" rel="noopener">the public data</a>` +
     `<span class="sep">·</span><a href="https://d3js.org" target="_blank" rel="noopener">built with d3</a>` +
     (g.repoUrl
-      ? `<span class="sep">·</span><a href="${esc(safeUrl(g.repoUrl + "/issues/new?title=" + encodeURIComponent("Please remove me")))}" target="_blank" rel="noopener">prefer not to be here?</a>`
+      ? `<span class="sep">·</span><a href="${esc(safeUrl(`${g.repoUrl}/issues/new?title=${encodeURIComponent("Please remove me")}`))}" target="_blank" rel="noopener">prefer not to be here?</a>`
       : "");
 }
 
@@ -123,7 +122,7 @@ function animateNumber(el, to) {
   const dur = 1400, t0 = performance.now();
   const tick = (now) => {
     const p = Math.min(1, (now - t0) / dur);
-    const eased = 1 - Math.pow(1 - p, 3);
+    const eased = 1 - (1 - p) ** 3;
     el.textContent = Math.round(to * eased).toLocaleString("en-US");
     if (p < 1) requestAnimationFrame(tick);
   };
@@ -307,7 +306,7 @@ function buildGraph(g) {
     }
     ctx.save();
     ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 6.2832); ctx.closePath(); ctx.clip();
-    if (im && im._ready) ctx.drawImage(im, n.x - n.r, n.y - n.r, n.r * 2, n.r * 2);
+    if (im?._ready) ctx.drawImage(im, n.x - n.r, n.y - n.r, n.r * 2, n.r * 2);
     else { ctx.fillStyle = n.super ? "#3a2c16" : "#2a2014"; ctx.fill(); }
     ctx.restore();
     ctx.lineWidth = (isMe ? 1.6 : n.super ? 2.4 : 1.2) / transform.k;
@@ -336,7 +335,7 @@ function buildGraph(g) {
   canvas.addEventListener("mouseleave", () => { hover = null; tooltipEl.hidden = true; scheduleRender(); });
   canvas.addEventListener("click", (event) => {
     const n = pick(event);
-    if (n && n.url) window.open(safeUrl(n.url), "_blank", "noopener");
+    if (n?.url) window.open(safeUrl(n.url), "_blank", "noopener");
   });
 
   function showTooltip(n, event) {
@@ -356,8 +355,8 @@ function buildGraph(g) {
     }
     tooltipEl.innerHTML = html;
     tooltipEl.hidden = false;
-    tooltipEl.style.left = mx + "px";
-    tooltipEl.style.top = my + "px";
+    tooltipEl.style.left = `${mx}px`;
+    tooltipEl.style.top = `${my}px`;
     void rect;
   }
 
@@ -426,7 +425,7 @@ function buildWall(g) {
   // Same hover card as the cloud: avatar, name, @handle, coloured activity tags.
   const card = (p) => {
     const rank = rankOf(p.score);
-    return `<a class="face ${p.score >= SUPER ? "super" : ""}${rank ? ` rank-${rank}` : ""}" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener" data-name="${esc((p.name || "") + " " + p.login).toLowerCase()}">
+    return `<a class="face ${p.score >= SUPER ? "super" : ""}${rank ? ` rank-${rank}` : ""}" href="${esc(safeUrl(p.url))}" target="_blank" rel="noopener" data-name="${esc(`${p.name || ""} ${p.login}`).toLowerCase()}">
        <img loading="lazy" src="${esc(avatar(p.avatar, 120))}" alt="${esc(p.name || p.login)}" ${onImgError}/>
        ${rank ? `<span class="rank-crown">${rank === 1 ? "★" : rank}</span>` : ""}
        ${p.score >= SUPER ? `<span class="score-badge">${p.score}</span>` : ""}
@@ -508,7 +507,7 @@ function buildLanded(g) {
    I'm grateful too — the shoulders I stand on
    ════════════════════════════════════════════════════════════════════════ */
 const fmtStars = (n) =>
-  n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k" : String(n);
+  n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "")}k` : String(n);
 
 const DEP_CAP = 18;
 
