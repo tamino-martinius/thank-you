@@ -172,6 +172,7 @@ npm run sync      # collect + aggregate → refreshes data/snapshot.json + graph
 | `npm run aggregate` | curate → `data/public/graph.json` + `site/data/graph.json` |
 | `npm run sync` | both, in order |
 | `npm run serve` | preview `site/` locally (no token) |
+| `npm run check` | type-check + unit test + site syntax check (what CI runs; no token) |
 
 ### Conductor
 
