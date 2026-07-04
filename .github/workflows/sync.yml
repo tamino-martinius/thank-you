@@ -75,8 +75,32 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deploy-1.outputs.page_url || steps.deploy-2.outputs.page_url || steps.deploy-3.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      # GitHub's Pages backend intermittently marks a deployment as
+      # "Deployment failed, try again later." even when the artifact is fine;
+      # a re-run of the identical build has always succeeded. Re-attempt the
+      # deploy a couple of times with a short backoff before failing the job.
+      - name: Deploy to GitHub Pages (attempt 1)
+        id: deploy-1
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Back off before retry
+        if: steps.deploy-1.outcome == 'failure'
+        run: sleep 30
+
+      - name: Deploy to GitHub Pages (attempt 2)
+        id: deploy-2
+        if: steps.deploy-1.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Back off before final attempt
+        if: steps.deploy-1.outcome == 'failure' && steps.deploy-2.outcome == 'failure'
+        run: sleep 60
+
+      - name: Deploy to GitHub Pages (attempt 3)
+        id: deploy-3
+        if: steps.deploy-1.outcome == 'failure' && steps.deploy-2.outcome == 'failure'
         uses: actions/deploy-pages@v4
