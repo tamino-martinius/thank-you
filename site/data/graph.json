@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T06:28:20.079Z",
+  "generatedAt": "2026-07-12T06:46:57.741Z",
   "repoUrl": "https://github.com/tamino-martinius/thank-you",
   "gemThreshold": 1000,
   "me": {
@@ -4199,7 +4199,7 @@
         "kind": "repo",
         "title": "react/react",
         "url": "https://github.com/react/react",
-        "reactions": 246393,
+        "reactions": 246433,
         "supporters": 0,
         "language": "JavaScript",
         "avatar": "https://avatars.githubusercontent.com/u/102812?v=4"
@@ -4210,7 +4210,7 @@
         "kind": "repo",
         "title": "NousResearch/hermes-agent",
         "url": "https://github.com/NousResearch/hermes-agent",
-        "reactions": 212893,
+        "reactions": 213386,
         "supporters": 0,
         "language": "Python",
         "avatar": "https://avatars.githubusercontent.com/u/134168893?v=4"
@@ -4221,7 +4221,7 @@
         "kind": "repo",
         "title": "d3/d3",
         "url": "https://github.com/d3/d3",
-        "reactions": 113200,
+        "reactions": 113204,
         "supporters": 0,
         "language": "Shell",
         "avatar": "https://avatars.githubusercontent.com/u/1562726?v=4"
@@ -4232,7 +4232,7 @@
         "kind": "repo",
         "title": "microsoft/TypeScript",
         "url": "https://github.com/microsoft/TypeScript",
-        "reactions": 109818,
+        "reactions": 109862,
         "supporters": 0,
         "language": "TypeScript",
         "avatar": "https://avatars.githubusercontent.com/u/6154722?v=4"
@@ -4243,7 +4243,7 @@
         "kind": "repo",
         "title": "mermaid-js/mermaid",
         "url": "https://github.com/mermaid-js/mermaid",
-        "reactions": 89160,
+        "reactions": 89186,
         "supporters": 0,
         "language": "TypeScript",
         "avatar": "https://avatars.githubusercontent.com/u/57169982?v=4"
@@ -4254,7 +4254,7 @@
         "kind": "repo",
         "title": "vitejs/vite",
         "url": "https://github.com/vitejs/vite",
-        "reactions": 81984,
+        "reactions": 82012,
         "supporters": 0,
         "language": "TypeScript",
         "avatar": "https://avatars.githubusercontent.com/u/65625612?v=4"
@@ -4265,7 +4265,7 @@
         "kind": "repo",
         "title": "jestjs/jest",
         "url": "https://github.com/jestjs/jest",
-        "reactions": 45536,
+        "reactions": 45542,
         "supporters": 0,
         "language": "TypeScript",
         "avatar": "https://avatars.githubusercontent.com/u/103283236?v=4"
@@ -4276,7 +4276,7 @@
         "kind": "repo",
         "title": "usestrix/strix",
         "url": "https://github.com/usestrix/strix",
-        "reactions": 40257,
+        "reactions": 40634,
         "supporters": 0,
         "language": "Python",
         "avatar": "https://avatars.githubusercontent.com/u/187630752?v=4"
@@ -4287,7 +4287,7 @@
         "kind": "repo",
         "title": "biomejs/biome",
         "url": "https://github.com/biomejs/biome",
-        "reactions": 25370,
+        "reactions": 25390,
         "supporters": 0,
         "language": "Rust",
         "avatar": "https://avatars.githubusercontent.com/u/140182603?v=4"
@@ -4298,7 +4298,7 @@
         "kind": "repo",
         "title": "ruby/ruby",
         "url": "https://github.com/ruby/ruby",
-        "reactions": 23650,
+        "reactions": 23657,
         "supporters": 0,
         "language": "Ruby",
         "avatar": "https://avatars.githubusercontent.com/u/210414?v=4"
@@ -4309,7 +4309,7 @@
         "kind": "repo",
         "title": "brianc/node-postgres",
         "url": "https://github.com/brianc/node-postgres",
-        "reactions": 13180,
+        "reactions": 13179,
         "supporters": 0,
         "language": "JavaScript",
         "avatar": "https://avatars.githubusercontent.com/u/50081?v=4"
@@ -4331,7 +4331,7 @@
         "kind": "repo",
         "title": "porsager/postgres",
         "url": "https://github.com/porsager/postgres",
-        "reactions": 8671,
+        "reactions": 8670,
         "supporters": 0,
         "language": "JavaScript",
         "avatar": "https://avatars.githubusercontent.com/u/1288405?v=4"
@@ -4353,7 +4353,7 @@
         "kind": "repo",
         "title": "dmotz/trystero",
         "url": "https://github.com/dmotz/trystero",
-        "reactions": 2638,
+        "reactions": 2639,
         "supporters": 0,
         "language": "TypeScript",
         "avatar": "https://avatars.githubusercontent.com/u/302080?v=4"
@@ -4364,7 +4364,7 @@
         "kind": "repo",
         "title": "Jakubantalik/transitions.dev",
         "url": "https://github.com/Jakubantalik/transitions.dev",
-        "reactions": 1969,
+        "reactions": 1978,
         "supporters": 0,
         "language": "HTML",
         "avatar": "https://avatars.githubusercontent.com/u/14873517?v=4"
@@ -4381,6 +4381,17 @@
         "avatar": "https://avatars.githubusercontent.com/u/56996?v=4"
       },
       {
+        "id": "gh:starred:oso95/scroll-world",
+        "source": "github",
+        "kind": "repo",
+        "title": "oso95/scroll-world",
+        "url": "https://github.com/oso95/scroll-world",
+        "reactions": 954,
+        "supporters": 0,
+        "language": "JavaScript",
+        "avatar": "https://avatars.githubusercontent.com/u/86410452?v=4"
+      },
+      {
         "id": "gh:starred:browserify/resolve",
         "source": "github",
         "kind": "repo",
@@ -4390,17 +4401,6 @@
         "supporters": 0,
         "language": "JavaScript",
         "avatar": "https://avatars.githubusercontent.com/u/6320506?v=4"
-      },
-      {
-        "id": "gh:starred:oso95/scroll-world",
-        "source": "github",
-        "kind": "repo",
-        "title": "oso95/scroll-world",
-        "url": "https://github.com/oso95/scroll-world",
-        "reactions": 697,
-        "supporters": 0,
-        "language": "JavaScript",
-        "avatar": "https://avatars.githubusercontent.com/u/86410452?v=4"
       },
       {
         "id": "gh:starred:expressjs/serve-index",
@@ -4435,7 +4435,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/6154722?v=4",
           "url": "https://github.com/microsoft"
         },
-        "stars": 109818,
+        "stars": 109862,
         "language": "TypeScript",
         "description": "TypeScript is a superset of JavaScript that compiles to clean JavaScript output.",
         "degree": 1,
@@ -4455,7 +4455,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/140182603?v=4",
           "url": "https://github.com/biomejs"
         },
-        "stars": 25370,
+        "stars": 25390,
         "language": "Rust",
         "description": "A toolchain for web projects, aimed to provide functionalities to maintain them. Biome offers formatter and linter, usable via CLI and LSP.",
         "degree": 1,
@@ -4475,14 +4475,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/2105791?v=4",
           "url": "https://github.com/webpack"
         },
-        "stars": 2606,
+        "stars": 2607,
         "language": "JavaScript",
         "description": "Webpack's Command Line Interface",
         "degree": 1,
         "usageCount": 12,
         "runtime": false,
         "isStarred": false,
-        "pushedAt": "2026-07-10T15:57:51Z",
+        "pushedAt": "2026-07-12T00:49:15Z",
         "active": true,
         "gem": false
       },
@@ -4515,14 +4515,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/2105791?v=4",
           "url": "https://github.com/webpack"
         },
-        "stars": 65932,
+        "stars": 65945,
         "language": "JavaScript",
         "description": "A bundler for javascript and friends. Packs many modules into a few bundled assets. Code Splitting allows for loading parts of the application on demand. Through \"loaders\", modules can be CommonJs, AMD, ES6 modules, CSS, Images, JSON, Coffeescript, LESS, ... and your custom stuff.",
         "degree": 1,
         "usageCount": 12,
         "runtime": false,
         "isStarred": false,
-        "pushedAt": "2026-07-11T03:28:46Z",
+        "pushedAt": "2026-07-12T02:06:43Z",
         "active": true,
         "gem": false
       },
@@ -4635,14 +4635,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/10780624?v=4",
           "url": "https://github.com/kulshekhar"
         },
-        "stars": 7078,
+        "stars": 7077,
         "language": "TypeScript",
         "description": "A Jest transformer with source map support that lets you use Jest to test projects written in TypeScript.",
         "degree": 1,
         "usageCount": 8,
         "runtime": false,
         "isStarred": false,
-        "pushedAt": "2026-07-10T19:03:02Z",
+        "pushedAt": "2026-07-11T15:31:15Z",
         "active": true,
         "gem": false
       },
@@ -4655,7 +4655,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/103283236?v=4",
           "url": "https://github.com/jestjs"
         },
-        "stars": 45536,
+        "stars": 45542,
         "language": "TypeScript",
         "description": "Delightful JavaScript Testing.",
         "degree": 1,
@@ -4675,7 +4675,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/8770005?v=4",
           "url": "https://github.com/mochajs"
         },
-        "stars": 23031,
+        "stars": 23035,
         "language": "JavaScript",
         "description": "☕️ Classic, reliable, trusted test framework for Node.js and the browser",
         "degree": 1,
@@ -4695,7 +4695,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/2565403?v=4",
           "url": "https://github.com/lodash"
         },
-        "stars": 61245,
+        "stars": 61246,
         "language": "JavaScript",
         "description": "A modern JavaScript utility library delivering modularity, performance, & extras.",
         "degree": 1,
@@ -4875,14 +4875,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/6019716?v=4",
           "url": "https://github.com/eslint"
         },
-        "stars": 27497,
+        "stars": 27506,
         "language": "JavaScript",
         "description": "Find and fix problems in your JavaScript code.",
         "degree": 1,
         "usageCount": 5,
         "runtime": false,
         "isStarred": false,
-        "pushedAt": "2026-07-10T21:22:53Z",
+        "pushedAt": "2026-07-11T08:39:17Z",
         "active": true,
         "gem": false
       },
@@ -4895,7 +4895,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/9637642?v=4",
           "url": "https://github.com/babel"
         },
-        "stars": 44090,
+        "stars": 44095,
         "language": "TypeScript",
         "description": "🐠 Babel is a compiler for writing next generation JavaScript.",
         "degree": 1,
@@ -4915,14 +4915,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/65625612?v=4",
           "url": "https://github.com/vitejs"
         },
-        "stars": 81984,
+        "stars": 82012,
         "language": "TypeScript",
         "description": "Next generation frontend tooling. It's fast!",
         "degree": 1,
         "usageCount": 5,
         "runtime": true,
         "isStarred": true,
-        "pushedAt": "2026-07-10T11:36:34Z",
+        "pushedAt": "2026-07-11T22:56:23Z",
         "active": true,
         "gem": false
       },
@@ -5015,7 +5015,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/6128107?v=4",
           "url": "https://github.com/vuejs"
         },
-        "stars": 4650,
+        "stars": 4652,
         "language": "TypeScript",
         "description": "🚦 The official router for Vue.js",
         "degree": 1,
@@ -5035,7 +5035,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/22173486?v=4",
           "url": "https://github.com/loopbackio"
         },
-        "stars": 5096,
+        "stars": 5097,
         "language": "TypeScript",
         "description": "LoopBack makes it easy to build modern API applications that require complex integrations.",
         "degree": 1,
@@ -5075,7 +5075,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/2178663?v=4",
           "url": "https://github.com/TryGhost"
         },
-        "stars": 6415,
+        "stars": 6414,
         "language": "PLpgSQL",
         "description": "SQLite3 bindings for Node.js",
         "degree": 1,
@@ -5115,7 +5115,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/2232217?v=4",
           "url": "https://github.com/aws"
         },
-        "stars": 12833,
+        "stars": 12834,
         "language": "TypeScript",
         "description": "The AWS Cloud Development Kit is a framework for defining cloud infrastructure in code",
         "degree": 1,
@@ -5135,7 +5135,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/50081?v=4",
           "url": "https://github.com/brianc"
         },
-        "stars": 13180,
+        "stars": 13179,
         "language": "JavaScript",
         "description": "PostgreSQL client for node.js.",
         "degree": 1,
@@ -5155,14 +5155,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/95747107?v=4",
           "url": "https://github.com/vitest-dev"
         },
-        "stars": 16829,
+        "stars": 16832,
         "language": "TypeScript",
         "description": "Next generation testing framework powered by Vite.",
         "degree": 1,
         "usageCount": 3,
         "runtime": false,
         "isStarred": false,
-        "pushedAt": "2026-07-10T22:21:24Z",
+        "pushedAt": "2026-07-11T12:29:57Z",
         "active": true,
         "gem": false
       },
@@ -5195,14 +5195,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/6128107?v=4",
           "url": "https://github.com/vuejs"
         },
-        "stars": 53944,
+        "stars": 53948,
         "language": "TypeScript",
         "description": "🖖 Vue.js is a progressive, incrementally-adoptable JavaScript framework for building UI on the web.",
         "degree": 1,
         "usageCount": 3,
         "runtime": true,
         "isStarred": false,
-        "pushedAt": "2026-07-10T23:36:27Z",
+        "pushedAt": "2026-07-12T02:48:12Z",
         "active": true,
         "gem": false
       },
@@ -5215,7 +5215,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/102812?v=4",
           "url": "https://github.com/react"
         },
-        "stars": 246393,
+        "stars": 246433,
         "language": "JavaScript",
         "description": "The library for web and native user interfaces.",
         "degree": 1,
@@ -5242,7 +5242,7 @@
         "usageCount": 2,
         "runtime": false,
         "isStarred": false,
-        "pushedAt": "2026-07-11T04:05:40Z",
+        "pushedAt": "2026-07-12T01:46:14Z",
         "active": true,
         "gem": false
       },
@@ -5255,7 +5255,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/9637642?v=4",
           "url": "https://github.com/babel"
         },
-        "stars": 4844,
+        "stars": 4845,
         "language": "JavaScript",
         "description": "📦 Babel loader for webpack",
         "degree": 1,
@@ -5275,7 +5275,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/22173486?v=4",
           "url": "https://github.com/loopbackio"
         },
-        "stars": 5096,
+        "stars": 5097,
         "language": "TypeScript",
         "description": "LoopBack makes it easy to build modern API applications that require complex integrations.",
         "degree": 1,
@@ -5395,7 +5395,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/5274?v=4",
           "url": "https://github.com/caolan"
         },
-        "stars": 28147,
+        "stars": 28146,
         "language": "JavaScript",
         "description": "Async utilities for node and the browser",
         "degree": 1,
@@ -5415,14 +5415,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/25254?v=4",
           "url": "https://github.com/tj"
         },
-        "stars": 28313,
+        "stars": 28317,
         "language": "JavaScript",
         "description": "node.js command-line interfaces made easy",
         "degree": 1,
         "usageCount": 2,
         "runtime": true,
         "isStarred": false,
-        "pushedAt": "2026-07-11T06:26:37Z",
+        "pushedAt": "2026-07-11T06:28:23Z",
         "active": true,
         "gem": false
       },
@@ -5435,7 +5435,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/5658226?v=4",
           "url": "https://github.com/expressjs"
         },
-        "stars": 69357,
+        "stars": 69363,
         "language": "JavaScript",
         "description": "Fast, unopinionated, minimalist web framework for node.",
         "degree": 1,
@@ -5455,14 +5455,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/57169982?v=4",
           "url": "https://github.com/mermaid-js"
         },
-        "stars": 89160,
+        "stars": 89186,
         "language": "TypeScript",
         "description": "Generation of diagrams like flowcharts or sequence diagrams from text in a similar manner as markdown",
         "degree": 1,
         "usageCount": 2,
         "runtime": true,
         "isStarred": true,
-        "pushedAt": "2026-07-11T05:55:34Z",
+        "pushedAt": "2026-07-12T06:01:35Z",
         "active": true,
         "gem": false
       },
@@ -5795,7 +5795,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/173025?v=4",
           "url": "https://github.com/sidorares"
         },
-        "stars": 4370,
+        "stars": 4369,
         "language": "TypeScript",
         "description": ":zap: fast mysqljs/mysql compatible mysql driver for node.js",
         "degree": 1,
@@ -5835,7 +5835,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/40602590?v=4",
           "url": "https://github.com/opentypejs"
         },
-        "stars": 4989,
+        "stars": 4991,
         "language": "JavaScript",
         "description": "Read and write OpenType fonts using JavaScript.",
         "degree": 1,
@@ -5875,7 +5875,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/160219376?v=4",
           "url": "https://github.com/tape-testing"
         },
-        "stars": 5805,
+        "stars": 5804,
         "language": "JavaScript",
         "description": "tap-producing test harness for node and browsers",
         "degree": 1,
@@ -5915,7 +5915,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/1288405?v=4",
           "url": "https://github.com/porsager"
         },
-        "stars": 8671,
+        "stars": 8670,
         "language": "JavaScript",
         "description": "Postgres.js - The Fastest full featured PostgreSQL client for Node.js, Deno, Bun and CloudFlare",
         "degree": 1,
@@ -5942,7 +5942,7 @@
         "usageCount": 1,
         "runtime": true,
         "isStarred": false,
-        "pushedAt": "2026-07-01T21:33:27Z",
+        "pushedAt": "2026-07-12T01:24:55Z",
         "active": true,
         "gem": false
       },
@@ -5955,7 +5955,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/16785467?v=4",
           "url": "https://github.com/googleapis"
         },
-        "stars": 12193,
+        "stars": 12196,
         "language": "TypeScript",
         "description": "Google's officially supported Node.js client library for accessing Google APIs. Support for authorization and authentication with OAuth 2.0, API Keys and JWT (Service Tokens) is included. ",
         "degree": 1,
@@ -5995,7 +5995,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/10717820?v=4",
           "url": "https://github.com/konvajs"
         },
-        "stars": 14607,
+        "stars": 14610,
         "language": "TypeScript",
         "description": "Konva.js is an HTML5 Canvas JavaScript framework that extends the 2d context by enabling canvas interactivity for desktop and mobile applications.",
         "degree": 1,
@@ -6015,7 +6015,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/59565269?v=4",
           "url": "https://github.com/uuidjs"
         },
-        "stars": 15305,
+        "stars": 15306,
         "language": "TypeScript",
         "description": "Generate RFC-compliant UUIDs in JavaScript",
         "degree": 1,
@@ -6035,14 +6035,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/46634674?v=4",
           "url": "https://github.com/typescript-eslint"
         },
-        "stars": 16301,
+        "stars": 16303,
         "language": "TypeScript",
         "description": ":sparkles: Monorepo for all the tooling which enables ESLint to support TypeScript",
         "degree": 1,
         "usageCount": 1,
         "runtime": false,
         "isStarred": false,
-        "pushedAt": "2026-07-10T19:56:37Z",
+        "pushedAt": "2026-07-12T06:36:46Z",
         "active": true,
         "gem": false
       },
@@ -6055,7 +6055,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/11980392?v=4",
           "url": "https://github.com/commitizen"
         },
-        "stars": 17481,
+        "stars": 17480,
         "language": "JavaScript",
         "description": "The commitizen command line utility. #BlackLivesMatter",
         "degree": 1,
@@ -6075,7 +6075,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/2824157?v=4",
           "url": "https://github.com/auth0"
         },
-        "stars": 18178,
+        "stars": 18176,
         "language": "JavaScript",
         "description": "JsonWebToken implementation for node.js http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html",
         "degree": 1,
@@ -6095,14 +6095,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/16443515?v=4",
           "url": "https://github.com/conventional-changelog"
         },
-        "stars": 18646,
+        "stars": 18647,
         "language": "TypeScript",
         "description": "📓 Lint commit messages",
         "degree": 1,
         "usageCount": 1,
         "runtime": false,
         "isStarred": false,
-        "pushedAt": "2026-07-10T07:42:59Z",
+        "pushedAt": "2026-07-12T06:15:21Z",
         "active": true,
         "gem": false
       },
@@ -6115,7 +6115,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/9271229?v=4",
           "url": "https://github.com/jsdom"
         },
-        "stars": 21603,
+        "stars": 21605,
         "language": "JavaScript",
         "description": "A JavaScript implementation of various web standards, for use with Node.js",
         "degree": 1,
@@ -6135,7 +6135,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/10248321?v=4",
           "url": "https://github.com/markdown-it"
         },
-        "stars": 21675,
+        "stars": 21679,
         "language": "JavaScript",
         "description": "Markdown parser, done right. 100% CommonMark support, extensions, syntax plugins & high speed",
         "degree": 1,
@@ -6175,7 +6175,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/13122722?v=4",
           "url": "https://github.com/chalk"
         },
-        "stars": 23276,
+        "stars": 23277,
         "language": "JavaScript",
         "description": "🖍 Terminal string styling done right",
         "degree": 1,
@@ -6195,7 +6195,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/9039821?v=4",
           "url": "https://github.com/highlightjs"
         },
-        "stars": 24961,
+        "stars": 24965,
         "language": "JavaScript",
         "description": "JavaScript syntax highlighter with language auto-detection and zero dependencies.",
         "degree": 1,
@@ -6235,7 +6235,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/6200624?v=4",
           "url": "https://github.com/gulpjs"
         },
-        "stars": 32956,
+        "stars": 32955,
         "language": "JavaScript",
         "description": "A toolkit to automate & enhance your workflow",
         "degree": 1,
@@ -6255,7 +6255,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/5502029?v=4",
           "url": "https://github.com/typicode"
         },
-        "stars": 35202,
+        "stars": 35204,
         "language": "JavaScript",
         "description": "Git hooks made easy 🐶 woof!",
         "degree": 1,
@@ -6275,7 +6275,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/32607881?v=4",
           "url": "https://github.com/parcel-bundler"
         },
-        "stars": 44024,
+        "stars": 44025,
         "language": "JavaScript",
         "description": "The zero configuration build tool for the web. 📦🚀",
         "degree": 1,
@@ -6295,7 +6295,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/67109815?v=4",
           "url": "https://github.com/tailwindlabs"
         },
-        "stars": 95907,
+        "stars": 95953,
         "language": "TypeScript",
         "description": "A utility-first CSS framework for rapid UI development.",
         "degree": 1,
@@ -6315,7 +6315,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/1562726?v=4",
           "url": "https://github.com/d3"
         },
-        "stars": 113200,
+        "stars": 113204,
         "language": "Shell",
         "description": "Bring data to life with SVG, Canvas and HTML. :bar_chart::chart_with_upwards_trend::tada:",
         "degree": 1,
@@ -6335,14 +6335,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/14985020?v=4",
           "url": "https://github.com/vercel"
         },
-        "stars": 140781,
+        "stars": 140991,
         "language": "JavaScript",
         "description": "The React Framework",
         "degree": 1,
         "usageCount": 1,
         "runtime": true,
         "isStarred": false,
-        "pushedAt": "2026-07-11T00:28:23Z",
+        "pushedAt": "2026-07-12T00:30:24Z",
         "active": true,
         "gem": false
       },
@@ -6775,7 +6775,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/6128107?v=4",
           "url": "https://github.com/vuejs"
         },
-        "stars": 210130,
+        "stars": 210159,
         "language": "TypeScript",
         "description": "This is the repo for Vue 2. For Vue 3, go to https://github.com/vuejs/core",
         "degree": 1,
@@ -6915,7 +6915,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/723678?v=4",
           "url": "https://github.com/nodeca"
         },
-        "stars": 6603,
+        "stars": 6604,
         "language": "TypeScript",
         "description": "JavaScript YAML parser and dumper. Very fast.",
         "degree": 2,
@@ -6935,14 +6935,14 @@
           "avatar": "https://avatars.githubusercontent.com/u/8296347?v=4",
           "url": "https://github.com/postcss"
         },
-        "stars": 28971,
+        "stars": 28970,
         "language": "TypeScript",
         "description": "Transforming styles with JS plugins",
         "degree": 2,
         "usageCount": 8,
         "runtime": true,
         "isStarred": false,
-        "pushedAt": "2026-07-08T15:00:59Z",
+        "pushedAt": "2026-07-11T19:17:14Z",
         "active": true,
         "gem": false
       },
@@ -7095,7 +7095,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/574696?v=4",
           "url": "https://github.com/paulmillr"
         },
-        "stars": 12167,
+        "stars": 12169,
         "language": "TypeScript",
         "description": "Minimal and efficient cross-platform file watching library",
         "degree": 2,
@@ -7122,7 +7122,7 @@
         "usageCount": 5,
         "runtime": true,
         "isStarred": false,
-        "pushedAt": "2026-07-06T13:46:26Z",
+        "pushedAt": "2026-07-11T18:34:41Z",
         "active": true,
         "gem": false
       },
@@ -7195,7 +7195,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/8325802?v=4",
           "url": "https://github.com/jshttp"
         },
-        "stars": 1557,
+        "stars": 1558,
         "language": "JavaScript",
         "description": "Create HTTP Errors",
         "degree": 2,
@@ -7235,7 +7235,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/196390?v=4",
           "url": "https://github.com/kpdecker"
         },
-        "stars": 9173,
+        "stars": 9174,
         "language": "JavaScript",
         "description": "A javascript text differencing implementation.",
         "degree": 2,
@@ -7495,7 +7495,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/8325802?v=4",
           "url": "https://github.com/jshttp"
         },
-        "stars": 1524,
+        "stars": 1525,
         "language": "TypeScript",
         "description": "HTTP server cookie parsing and serialization",
         "degree": 2,
@@ -7515,7 +7515,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/8441312?v=4",
           "url": "https://github.com/pillarjs"
         },
-        "stars": 3176,
+        "stars": 3177,
         "language": "JavaScript",
         "description": "Convert character encodings in pure javascript.",
         "degree": 2,
@@ -7682,7 +7682,7 @@
         "usageCount": 2,
         "runtime": true,
         "isStarred": false,
-        "pushedAt": "2026-07-07T05:49:30Z",
+        "pushedAt": "2026-07-11T18:35:48Z",
         "active": true,
         "gem": true
       },
@@ -7722,7 +7722,7 @@
         "usageCount": 2,
         "runtime": true,
         "isStarred": false,
-        "pushedAt": "2026-07-08T00:16:17Z",
+        "pushedAt": "2026-07-12T05:17:41Z",
         "active": true,
         "gem": false
       },
@@ -7742,7 +7742,7 @@
         "usageCount": 2,
         "runtime": true,
         "isStarred": false,
-        "pushedAt": "2026-07-09T09:02:18Z",
+        "pushedAt": "2026-07-11T08:32:03Z",
         "active": true,
         "gem": false
       },
@@ -7775,7 +7775,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/34631683?v=4",
           "url": "https://github.com/acornjs"
         },
-        "stars": 11414,
+        "stars": 11413,
         "language": "JavaScript",
         "description": "A small, fast, JavaScript-based JavaScript parser",
         "degree": 2,
@@ -7815,7 +7815,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/10721323?v=4",
           "url": "https://github.com/websockets"
         },
-        "stars": 22782,
+        "stars": 22783,
         "language": "JavaScript",
         "description": "Simple to use, blazing fast and thoroughly tested WebSocket client and server for Node.js",
         "degree": 2,
@@ -7895,7 +7895,7 @@
           "avatar": "https://avatars.githubusercontent.com/u/18183427?v=4",
           "url": "https://github.com/json5"
         },
-        "stars": 7141,
+        "stars": 7140,
         "language": "JavaScript",
         "description": "JSON5 — JSON for Humans",
         "degree": 2,
